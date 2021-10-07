@@ -32,7 +32,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Routes for pages
-app.get("/", homeController.index);
+app.get("/index", homeController.index);
 app.get("/about", homeController.about);
 app.get("/shop", homeController.shop);
 app.get("/shop-single", homeController.shopSingle);
