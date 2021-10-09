@@ -32,11 +32,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 // Routes for pages
-app.get("/index", homeController.index);
+app.get("/", homeController.index);
 app.get("/about", homeController.about);
 app.get("/shop", homeController.shop);
 app.get("/shop-single", homeController.shopSingle);
 app.get("/contact", homeController.contact);
+app.get("/search", homeController.search);
+app.get("/account", homeController.account);
+app.get("/cart", homeController.cart);
 
 
 // Set up error handling middleware at the end

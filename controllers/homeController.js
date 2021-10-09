@@ -19,3 +19,15 @@ exports.shop = (req, res) => {
 exports.shopSingle = (req, res) => {
   res.render("shop-single");
 };
+
+exports.search = (req, res) => {
+  res.render("search");
+}
+
+exports.account = (req, res) => {
+  res.render("account");
+}
+
+exports.cart = (req, res) => {
+  res.render("cart");
+}
