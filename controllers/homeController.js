@@ -9,15 +9,15 @@ exports.about = (req, res) => {
 };
 
 exports.contact = (req, res, next) => {
-  res.render("contact");
+  res.render("contact/index");
 };
 
 exports.shop = (req, res) => {
-  res.render("shop");
+  res.render("shop/index");
 };
 
 exports.shopSingle = (req, res) => {
-  res.render("shop-single");
+  res.render("shop/product");
 };
 
 exports.search = (req, res) => {
@@ -25,9 +25,9 @@ exports.search = (req, res) => {
 }
 
 exports.account = (req, res) => {
-  res.render("account");
+  res.render("profile/index");
 }
 
 exports.cart = (req, res) => {
-  res.render("cart");
+  res.render("cart/index");
 }
