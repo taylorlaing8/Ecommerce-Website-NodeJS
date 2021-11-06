@@ -1,14 +1,6 @@
 'use strict';
 
 // Import needed modules
-<<<<<<< HEAD
-const express = require('express'),
-	app = express(),
-	errorController = require('./controllers/errorController'),
-	homeController = require('./controllers/homeController'),
-	mongoose = require('mongoose'),
-	layouts = require('express-ejs-layouts');
-=======
 const express = require("express"),
   app = express(),
   router = require("./routes/index"),
@@ -20,7 +12,6 @@ const express = require("express"),
   connectFlash = require("connect-flash"),
   expressValidator = require("express-validator"),
   User = require("./models/user");
->>>>>>> b491550d0a3c5339e09ef736b3b2f730ba3c8b5f
 
 // Set application variables
 app.set('port', process.env.PORT || 3000);
@@ -44,23 +35,7 @@ app.use(layouts);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-<<<<<<< HEAD
-// Routes for pages
-app.get('/', homeController.index);
-app.get('/index', homeController.index);
-app.get('/about', homeController.about);
-app.get('/shop', homeController.shop);
-app.get('/shop-single', homeController.shopSingle);
-app.get('/contact', homeController.contact);
-
-// Set up error handling middleware at the end
-// These should only be applied if no other routes apply
-app.use(errorController.logErrors);
-app.use(errorController.respondNoResourceFound);
-app.use(errorController.respondInternalError);
-=======
 app.use("/", router);
->>>>>>> b491550d0a3c5339e09ef736b3b2f730ba3c8b5f
 
 // Launch the server
 app.listen(app.get('port'), () => {
