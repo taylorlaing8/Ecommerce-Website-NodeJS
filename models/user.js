@@ -1,11 +1,11 @@
 "use strict";
 
 const mongoose = require("mongoose"),
-    { Schema } = mongoose,
-    Subscriber = require("./subscriber"),
-    passportLocalMongoose = require("passport-local-mongoose"),
-    randToken = require("rand-token"),
-    userSchema = new Schema(
+  { Schema } = mongoose,
+  Subscriber = require("./subscriber"),
+  passportLocalMongoose = require("passport-local-mongoose"),
+  randToken = require("rand-token"),
+  userSchema = new Schema(
         {
             name: {
                 first: {
@@ -53,10 +53,6 @@ const mongoose = require("mongoose"),
             account: { // Two options: 'admin', 'user'
                 type: String,
                 trim: true,
-                required: true
-            },
-            password: {
-                type: String,
                 required: true
             },
             profileImage: {

@@ -23,9 +23,13 @@ mongoose.connect(
 	'mongodb+srv://admin:DevPass$8@is5050-cluster.eqzfs.mongodb.net/covert_tees?retryWrites=true&w=majority'
 );
 const db = mongoose.connection;
-db.once('open', () => {
-	console.log('Successfully connected to MongoDB using Mongoose');
+
+db.once("open", () => {
+  console.log("Successfully connected to MongoDB using Mongoose!");
 });
+
+app.set("port", process.env.PORT || 3000);
+app.set("view engine", "ejs");
 
 app.use(express.static("public"));
 app.use(layouts);
@@ -56,24 +60,21 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
-// passport.use(User.createStrategy());
-// passport.serializeUser(User.serializeUser());
-// passport.deserializeUser(User.deserializeUser());
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 app.use(connectFlash());
 
 app.use((req, res, next) => {
-  // res.locals.loggedIn = req.isAuthenticated();
-  // res.locals.currentUser = req.user;
+  res.locals.loggedIn = req.isAuthenticated();
+  res.locals.currentUser = req.user;
   res.locals.flashMessages = req.flash();
   next();
 });
-
-// Mongoose Promises
-mongoose.Promise = global.Promise;
+//app.use(expressValidator());
 
 app.use("/", router);
 
-// Launch the server
-app.listen(app.get('port'), () => {
-	console.log(`Server running at http://localhost:${app.get('port')}`);
+app.listen(app.get("port"), () => {
+  console.log(`Server running at http://localhost:${app.get("port")}`);
 });
