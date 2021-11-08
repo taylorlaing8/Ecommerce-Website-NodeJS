@@ -3,6 +3,10 @@
 const mongoose = require("mongoose"),
     { Schema } = mongoose,
     productSchema = new Schema({
+        slug: {
+            type: String,
+            required: true
+        },
         sku: {
             type: String,
             required: true,
@@ -18,14 +22,22 @@ const mongoose = require("mongoose"),
             type: String,
             required: true
         },
+        price: {
+            type: Number,
+            required: true
+        },
+        variation: {
+            type: String,
+            required: true
+        },
         category: {
             type: Schema.Types.ObjectId,
             ref: "Category"
         },
-        images: { // Array of Image objects 
-            type: Array,
-            required: true,
-        }
+        images: [{ 
+            type: Schema.Types.ObjectId, 
+            ref: "Image" 
+        }]
     });
 
 module.exports = mongoose.model("Product", productSchema, 'cProducts');

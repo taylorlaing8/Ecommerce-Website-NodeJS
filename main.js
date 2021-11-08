@@ -11,6 +11,7 @@ const express = require("express"),
   cookieParser = require("cookie-parser"),
   connectFlash = require("connect-flash"),
   expressValidator = require("express-validator"),
+  passport = require("passport"),
   User = require("./models/user");
 
 // Set application variables
@@ -26,14 +27,49 @@ db.once('open', () => {
 	console.log('Successfully connected to MongoDB using Mongoose');
 });
 
+app.use(express.static("public"));
+app.use(layouts);
+app.use(
+  express.urlencoded({
+    extended: false
+  })
+);
+
+app.use(
+  methodOverride("_method", {
+    methods: ["POST", "GET"]
+  })
+);
+
+app.use(express.json());
+app.use(cookieParser("secret_passcode"));
+app.use(
+  expressSession({
+    secret: "secret_passcode",
+    cookie: {
+      maxAge: 4000000
+    },
+    resave: false,
+    saveUninitialized: false
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+// passport.use(User.createStrategy());
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
+app.use(connectFlash());
+
+app.use((req, res, next) => {
+  // res.locals.loggedIn = req.isAuthenticated();
+  // res.locals.currentUser = req.user;
+  res.locals.flashMessages = req.flash();
+  next();
+});
+
 // Mongoose Promises
 mongoose.Promise = global.Promise;
-
-// Set up application middleware
-app.use(express.static('public'));
-app.use(layouts);
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 app.use("/", router);
 

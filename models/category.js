@@ -3,6 +3,10 @@
 const mongoose = require("mongoose"),
     { Schema } = mongoose,
     categorySchema = new Schema({
+        slug: {
+            type: String,
+            required: true
+        },
         category: {
             type: String,
             required: true
