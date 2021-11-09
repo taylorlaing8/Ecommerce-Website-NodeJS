@@ -19,9 +19,7 @@ app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
 
 // Mongoose database setup
-mongoose.connect(
-	'mongodb+srv://admin:DevPass$8@is5050-cluster.eqzfs.mongodb.net/covert_tees?retryWrites=true&w=majority'
-);
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://admin:DevPass$8@is5050-cluster.eqzfs.mongodb.net/covert_tees?retryWrites=true&w=majority');
 const db = mongoose.connection;
 
 db.once("open", () => {
