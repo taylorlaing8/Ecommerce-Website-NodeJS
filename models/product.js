@@ -26,10 +26,10 @@ const mongoose = require("mongoose"),
             type: Number,
             required: true
         },
-        variation: {
-            type: String,
-            required: true
-        },
+        variation: [{ 
+            type: Schema.Types.ObjectId, 
+            ref: "Variation" 
+        }],
         category: {
             type: Schema.Types.ObjectId,
             ref: "Category"

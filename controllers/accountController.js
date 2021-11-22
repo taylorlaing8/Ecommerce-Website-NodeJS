@@ -12,28 +12,27 @@ const User = require("../models/user"),
                 last: body.lname
             },
             email: body.email,
-            account: 'user', // Two options: 'admin', 'user'
             password: body.password
         }
     }
 module.exports = {
-    index: (req, res, next) => {
-        let currentUser = req.user;
-        if (currentUser) {
-            User.findById(currentUser)
-                .then(user => {
-                    res.locals.user = user;
-                    res.locals.redirect = "/";
-                    next();
-                })
-                .catch(error => {
-                    console.log(`Error accessing user account: ${error.message}`);
-                    next(error);
-                })
-        } else {
-            res.locals.redirect = "/account/login";
+    verifyLoggedIn: (req, res, next) => {
+        // res.send(req.originalUrl);
+        if (req.user) {
             next();
+        } else {
+            res.redirect("/login");
         }
+    },
+    verifyAdmin: (req, res, next) => {
+        if (req.user && req.user.admin == true) {
+            next();
+        } else {
+            res.send("You are not authorized");
+        }
+    },
+    index: (req, res) => {
+        res.render("account/index");
     },
     login: (req, res) => {
         res.render("account/login");
@@ -44,10 +43,11 @@ module.exports = {
         User.register(newUser, req.body.password, (error, user) => {
             if (user) {
                 res.locals.redirect = "/";
+                passport.authenticate("local", {});
                 next();
             } else {
-                req.flash("createAccountError", `Failed to create user account because: ${error.message}.`);
-                res.locals.redirect = "/account/login";
+                res.locals.redirect = "/login";
+                req.flash("createAccountError", `Error creating account: ${error.message}.`);
                 next();
             }
         });
@@ -72,47 +72,42 @@ module.exports = {
     },
     update: (req, res, next) => {
         let currentUser = req.user,
+            userParams = {};
+
+        // General Settings Update
+        if(req.params.type == 'general') {
             userParams = {
                 name: {
-                    first: req.body.first,
-                    last: req.body.last
+                    first: req.body.fName || currentUser.name.first,
+                    last: req.body.lName || currentUser.name.last
                 },
-                email: req.body.email,
-                address: {
-                    address_1: req.body.address1,
-                    address_2: req.body.address2,
-                    city: req.body.city,
-                    state: req.body.state,
-                    zipCode: req.body.zipcode,
-                    country: req.body.country
-                },
-                account: req.body.accountType,
-                password: req.body.password,
-                profileImage: req.body.profileImage,
+                email: req.body.email || currentUser.email,
+                // profileImage: req.body.profileImage,
             };
-
-        if (currentUser) {
-            User.findByIdAndUpdate(currentUser, {
-                $set: userParams
-            })
-                .then(user => {
-                    res.locals.redirect = "/";
-                    res.locals.user = user;
-                    next();
-                }).catch(error => {
-                    console.log(`Error updating user: ${error.message}`);
-                    next(error);
-                })
-        } else {
-            res.locals.redirect = "/";
-            next();
         }
+        // Address Settings Update
+        else if(req.params.type == 'address') {
+
+        }
+
+        // Update User
+        User.findByIdAndUpdate(currentUser, {
+            $set: userParams
+        }).then(user => {
+            req.flash("success", `User Account Updated!`);
+            res.locals.redirect = "/account";
+            res.locals.currentUser = user;
+            next();
+        }).catch(error => {
+            req.flash("error", `Error updating user: ${error.message}.`);
+            res.locals.redirect = "/account";
+            next();
+        })
     },
     authenticate: passport.authenticate("local", {
-        failureRedirect: "/account/login",
-        failureFlash: "Failed to login.",
-        successRedirect: "/",
-        successFlash: "Logged in!"
+        failureRedirect: "/login",
+        failureFlash: "Login failed: Check that you are using the correct username or password.",
+        successRedirect: "/"
     }),
     verifyJWT: (req, res, next) => {
         let token = req.headers.token;
@@ -188,6 +183,13 @@ module.exports = {
         } else {
             res.locals.redirect = "/accoun/login";
             next();
+        }
+    },
+    verifyAdmin: (req, res, next) => {
+        if (req.user && req.user.admin == true) {
+            next();
+        } else {
+            res.send("You are not authorized");
         }
     },
 

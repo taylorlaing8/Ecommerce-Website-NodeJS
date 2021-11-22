@@ -23,37 +23,17 @@ const mongoose = require("mongoose"),
                 lowercase: true,
                 unique: true
             },
-            address: {
-                address_1: {
-                    type: String,
-                    trim: true
-                },
-                address_2: {
-                    type: String,
-                    trim: true
-                },
-                city: {
-                    type: String,
-                    trim: true
-                },
-                state: {
-                    type: String,
-                    trim: true
-                },
-                zipCode: {
-                    type: Number,
-                    min: [10000, "Zip code too short"],
-                    max: [99999, "Zip code too long"]
-                },
-                country: {
-                    type: String,
-                    trim: true
-                }
+            shipping_address: {
+                type: Schema.Types.ObjectId,
+                ref: "Address"
             },
-            account: { // Two options: 'admin', 'user'
-                type: String,
-                trim: true,
-                required: true
+            billing_address: {
+                type: Schema.Types.ObjectId,
+                ref: "Address"
+            },
+            admin: {
+                type: Boolean,
+                default: false
             },
             profileImage: {
                 type: Schema.Types.ObjectId,

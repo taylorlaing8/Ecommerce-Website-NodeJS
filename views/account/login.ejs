@@ -1,14 +1,14 @@
 <!-- Start User Account -->
 <div class="container py-5">
     <div class="row py-5">
-        <form class="col-md-5 m-auto" action="/account/create" method="POST" role="form">
+        <form class="col-md-5 m-auto" action="/create-account" method="POST" role="form">
             <div class="row">
-                <div class="col col-md-6">
+                <div class="col col-12">
                     <h3>Create an Account</h3>
                 </div>
             </div>
             <div class="row">
-                <div class="col col-md-6">
+                <div class="col col-12">
                     <% if (flashMessages) { %>
                         <% if (flashMessages.createAccountSuccess) { %>
                         <div style="color: green">
@@ -24,17 +24,17 @@
             </div>
             <div class="row">
                 <div class="form-group col-md-6 mb-3">
-                    <input type="text" class="form-control mt-1" id="fname" name="fname" placeholder="First Name">
+                    <input type="text" class="form-control mt-1" id="fname" name="fname" placeholder="First Name" required>
                 </div>
                 <div class="form-group col-md-6 mb-3">
-                    <input type="text" class="form-control mt-1" id="lname" name="lname" placeholder="Last Name">
+                    <input type="text" class="form-control mt-1" id="lname" name="lname" placeholder="Last Name" required>
                 </div>
             </div>
             <div class="mb-3">
-                <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Email">
+                <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Email" required>
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control mt-1" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control mt-1" id="password" name="password" placeholder="Password" required>
             </div>
             <div class="row">
                 <div class="col text-start mt-2">
@@ -42,14 +42,14 @@
                 </div>
             </div>
         </form>
-        <form class="col-md-5 m-auto" action="/account/login" method="POST" role="form">
+        <form class="col-md-5 m-auto" action="/login" method="POST" role="form">
             <div class="row">
-                <div class="col col-md-6">
+                <div class="col col-12">
                     <h3>Login</h3>
                 </div>
             </div>
             <div class="row">
-                <div class="col col-md-6">
+                <div class="col col-12">
                     <% if (flashMessages) { %>
                         <% if (flashMessages.loginError) { %>
                         <div style="color: red">
@@ -60,10 +60,10 @@
                 </div>
             </div>
             <div class="mb-3">
-                <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Email">
+                <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Email" required>
             </div>
             <div class="mb-3">
-                <input type="password" class="form-control mt-1" id="password" name="password" placeholder="Password">
+                <input type="password" class="form-control mt-1" id="password" name="password" placeholder="Password" required>
             </div>
             <div class="row">
                 <div class="col text-start mt-2">
