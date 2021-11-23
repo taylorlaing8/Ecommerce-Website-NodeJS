@@ -5,22 +5,21 @@
     </h4>
 
     <div class="card overflow-hidden">
-        <div class="row no-gutters row-bordered row-border-light">
+        <div class="row no-gutters row-bordered row-border-light p-3">
             <div class="col-md-3 pt-0">
                 <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <button class="nav-link active" id="account-general-tab" data-bs-toggle="pill" data-bs-target="#account-general" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Account Details</button>
-                    <% if(currentUser.admin) { %><button class="nav-link" id="account-admin" data-bs-toggle="pill" data-bs-target="#account-admin" type="button" role="tab" aria-controls="v-pills-admin" aria-selected="false">Admin Panel</button><% } %>
                     <button class="nav-link" id="account-addresses-tab" data-bs-toggle="pill" data-bs-target="#account-addresses" type="button" role="tab" aria-controls="v-pills-addresses" aria-selected="false">Orders</button>
                     <button class="nav-link" id="account-change-password-tab" data-bs-toggle="pill" data-bs-target="#account-change-password" type="button" role="tab" aria-controls="v-pills-change-password" aria-selected="false">Addresses</button>
-                    <button class="nav-link" id="account-logout-tab" data-bs-toggle="pill" data-bs-target="account-logout" type="button" role="tab" aria-controls="v-pills-logout" aria-selected="false">Logout</button>
+                    <button class="nav-link" id="account-logout-tab" data-bs-toggle="pill" data-bs-target="#account-logout" type="button" role="tab" aria-controls="v-pills-logout" aria-selected="false">Logout</button>
                 </div>
             </div>
             <div class="col-md-9">
-                <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-content h-100" id="v-pills-tabContent">
 
                     <div class="tab-pane fade show active" id="account-general" role="tabpanel" aria-labelledby="account-general-tab">
                         <form action="/account/update" method="POST" role="form" encType="multipart/form-data">
-                            <div class="row py-3 align-items-center">
+                            <div class="row pb-3 align-items-center">
                                 <div class="col-auto">
                                     <% if(currentUser.profileImage) { %>
                                         <img src="<%= `/img/${currentUser.profileImage.url}` %>" alt="<%= `${currentUser.profileImage.alt}` %>" class="d-block ui-w-125 rounded-circle">
@@ -108,21 +107,11 @@
                         </div>
                     </div>
 
-                    <div class="tab-pane fade" id="account-logout" role="tabpanel" aria-labelledby="account-logout-tab">
-                        <div class="card-body pb-2">
-                            <div class="form-group">
-                                <label class="form-label">Current password</label>
-                                <input type="password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">New password</label>
-                                <input type="password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Repeat new password</label>
-                                <input type="password" class="form-control">
-                            </div>
-                        </div>
+                    <div class="tab-pane fade h-100" id="account-logout" role="tabpanel" aria-labelledby="account-logout-tab">
+                        <div class="row pb-3">
+                            <h4>Are you sure you want to log out?</h4>
+                            <a href="/account/logout">Confirm and Logout</a>
+                        </div> 
                     </div>
                 </div>
             </div>

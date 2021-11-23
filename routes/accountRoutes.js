@@ -12,4 +12,9 @@ router.get("/edit", accountController.edit);
 router.delete("/delete", accountController.delete, accountController.redirectView);
 router.post("/update", accountController.updateGeneral, accountController.redirectView);
 
+// Verify Admin
+router.use(accountController.verifyAdmin);
+
+router.get("/admin", accountController.adminIndex);
+
 module.exports = router;

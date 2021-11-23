@@ -35,10 +35,28 @@ Custom Css
     display: none;
 }
 
+.nav-admin {
+    padding: 0.5rem 1rem;
+    color: white;
+    background-color: var(--bs-blue);
+    border-radius: 10px;
+    text-decoration: none;
+}
+.nav-admin ::hover {
+    color: white;
+    background-color: var(--bs-gray-dark);
+}
+
 .ui-w-125 {
     width: 125px;
     height: 125px;
-    object-fit: cover;;
+    object-fit: cover;
+}
+
+.ui-w-125-175 {
+    width: 125px;
+    height: 175px;
+    object-fit: cover;
 }
 
 .btn-default {

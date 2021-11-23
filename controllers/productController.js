@@ -1,7 +1,7 @@
 "use strict";
 
 const Product = require("../models/product"),
-  httpStatus = require("http-status-codes");
+    httpStatus = require("http-status-codes");
 
 module.exports = {
     index: (req, res, next) => {
@@ -46,7 +46,29 @@ module.exports = {
             next(error);
         })
     },
+    update: (req, res, next) => {
+        let prodParams = {
+            slug: req.body.slug,
+            sku: req.body.sku,
+            title: req.body.title,
+            description: req.body.description,
+            price: req.body.price,
+            // variation: [req.body.variation],
+            category: req.body.category,
+            // images: [req.body.images]
+        };
 
+        Product.create(prodParams)
+        .then(product => {
+            res.locals.redirect = "/product";
+            res.locals.product = product;
+            next();
+        })
+        .catch(error => {
+            console.log(`Error saving product: ${error.message}`);
+            next(error);
+        })
+    },
     addImage: (req, res, next) => {
         let imageId = req.query.id,
           currentProduct = req.query.product;
@@ -67,7 +89,6 @@ module.exports = {
           next(new Error("No product found with id"));
         }
     },
-
     redirectView: (req, res, next) => {
         let redirectPath = res.locals.redirect;
         if (redirectPath !== undefined) res.redirect(redirectPath);

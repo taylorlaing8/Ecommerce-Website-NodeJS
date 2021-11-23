@@ -30,7 +30,8 @@ module.exports = {
         if (req.user && req.user.admin == true) {
             next();
         } else {
-            res.send("You are not authorized");
+            res.send("You are not authorized to access this resource.");
+            // next(new Error("You are not authorized to access this resource."));
         }
     },
     index: (req, res) => {
@@ -46,6 +47,9 @@ module.exports = {
                 res.render("account/index");
             })
         }
+    },
+    adminIndex: (req, res) => {
+        res.render("account/admin/index");
     },
     login: (req, res) => {
         res.render("account/login");
@@ -137,6 +141,10 @@ module.exports = {
             })
         }
     },
+    adminDataLoad: (req, res, next) => {
+        // Load all admin data for tab panel, including: Categories, Contacts, Images, Orders, Products, Variations, Subscribers, and Users
+
+    },
     authenticate: passport.authenticate("local", {
         failureRedirect: "/login",
         failureFlash: "Login failed: Check that you are using the correct username or password.",
@@ -216,13 +224,6 @@ module.exports = {
         } else {
             res.locals.redirect = "/accoun/login";
             next();
-        }
-    },
-    verifyAdmin: (req, res, next) => {
-        if (req.user && req.user.admin == true) {
-            next();
-        } else {
-            res.send("You are not authorized");
         }
     },
 
