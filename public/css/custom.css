@@ -35,9 +35,10 @@ Custom Css
     display: none;
 }
 
-.ui-w-80 {
-    width: 80px !important;
-    height: auto;
+.ui-w-125 {
+    width: 125px;
+    height: 125px;
+    object-fit: cover;;
 }
 
 .btn-default {

@@ -2,9 +2,11 @@
 
 const { check, validationResult } = require("express-validator");
 const User = require("../models/user"),
+    Image = require("../models/image"),
     passport = require("passport"),
     token = process.env.TOKEN || "cvtToken08$",
     jsonWebToken = require("jsonwebtoken"),
+    path = require("path"),
     getUserParams = body => {
         return {
             name: {
@@ -32,7 +34,18 @@ module.exports = {
         }
     },
     index: (req, res) => {
-        res.render("account/index");
+        if(req.user.profileImage) {
+            User.findById(req.user._id).populate('profileImage')
+            .then(user => {
+                res.locals.currentUser = user;
+            })
+            .catch(err => {
+                console.log("Error fetching profile image");
+            })
+            .finally(() => {
+                res.render("account/index");
+            })
+        }
     },
     login: (req, res) => {
         res.render("account/login");
@@ -70,39 +83,59 @@ module.exports = {
             next();
         }
     },
-    update: (req, res, next) => {
+    updateGeneral: (req, res, next) => {
         let currentUser = req.user,
-            userParams = {};
-
-        // General Settings Update
-        if(req.params.type == 'general') {
             userParams = {
                 name: {
                     first: req.body.fName || currentUser.name.first,
                     last: req.body.lName || currentUser.name.last
                 },
-                email: req.body.email || currentUser.email,
-                // profileImage: req.body.profileImage,
+                email: req.body.email || currentUser.email
             };
-        }
-        // Address Settings Update
-        else if(req.params.type == 'address') {
 
+        if (req.files && req.files.image) {
+            let imgFile = req.files.image;
+            let uploadPath = path.join(__dirname, "../public/img/account/") + currentUser._id + '_profile_image.jpg';
+            
+            Image.create({
+                title: currentUser.name.first + ' Profile Image',
+                alt: currentUser.name.first + '_profile_image',
+                url: 'account/' + currentUser._id + '_profile_image.jpg'
+            }).then(img => {
+                userParams.profileImage = img._id;
+                imgFile.mv(uploadPath, (err) => {
+                    if (err) req.flash("error", `Error uploading image: ${error.message}`);
+                })
+            }).then(() => {
+                User.findByIdAndUpdate(currentUser, {
+                    $set: userParams
+                }).then(user => {
+                    req.flash("success", `User Account Updated!`);
+                    res.locals.redirect = "/account";
+                    res.locals.currentUser = user;
+                    next();
+                }).catch(error => {
+                    req.flash("error", `Error updating user: ${error.message}.`);
+                    res.locals.redirect = "/account";
+                    next();
+                })
+            }).catch(err => {
+                req.flash("error", `Error creating image object: ${error.message}.`);
+            })
+        } else {
+            User.findByIdAndUpdate(currentUser, {
+                $set: userParams
+            }).then(user => {
+                req.flash("success", `User Account Updated!`);
+                res.locals.redirect = "/account";
+                res.locals.currentUser = user;
+                next();
+            }).catch(error => {
+                req.flash("error", `Error updating user: ${error.message}.`);
+                res.locals.redirect = "/account";
+                next();
+            })
         }
-
-        // Update User
-        User.findByIdAndUpdate(currentUser, {
-            $set: userParams
-        }).then(user => {
-            req.flash("success", `User Account Updated!`);
-            res.locals.redirect = "/account";
-            res.locals.currentUser = user;
-            next();
-        }).catch(error => {
-            req.flash("error", `Error updating user: ${error.message}.`);
-            res.locals.redirect = "/account";
-            next();
-        })
     },
     authenticate: passport.authenticate("local", {
         failureRedirect: "/login",

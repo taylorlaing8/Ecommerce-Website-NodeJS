@@ -12,7 +12,8 @@ const express = require("express"),
   connectFlash = require("connect-flash"),
   expressValidator = require("express-validator"),
   passport = require("passport"),
-  User = require("./models/user");
+  User = require("./models/user"),
+  fileUpload = require('express-fileupload');
 
 // Set application variables
 app.set('port', process.env.PORT || 3000);
@@ -62,6 +63,8 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 app.use(connectFlash());
+
+app.use(fileUpload());
 
 app.use((req, res, next) => {
   res.locals.loggedIn = req.isAuthenticated();

@@ -10,6 +10,6 @@ router.get("/", accountController.index);
 router.get("/logout", accountController.logout, accountController.redirectView);
 router.get("/edit", accountController.edit);
 router.delete("/delete", accountController.delete, accountController.redirectView);
-router.post("/update/:type", accountController.update, accountController.redirectView);
+router.post("/update", accountController.updateGeneral, accountController.redirectView);
 
 module.exports = router;
