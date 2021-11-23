@@ -49,7 +49,7 @@ module.exports = {
         }
     },
     adminIndex: (req, res) => {
-        res.render("account/admin/index");
+        res.render("admin/index");
     },
     login: (req, res) => {
         res.render("account/login");
@@ -141,9 +141,15 @@ module.exports = {
             })
         }
     },
-    adminDataLoad: (req, res, next) => {
-        // Load all admin data for tab panel, including: Categories, Contacts, Images, Orders, Products, Variations, Subscribers, and Users
-
+    getAll: (req, res, next) => {
+        User.find({}).populate('profileImage')
+        .then(users => {
+            res.locals.users = users;
+            next();
+        }).catch(err => {
+            console.log(`Error retrieving users: ${err.message}`);
+            next(err);
+        });
     },
     authenticate: passport.authenticate("local", {
         failureRedirect: "/login",

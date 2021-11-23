@@ -1,0 +1,15 @@
+<div class="tab-pane fade" id="admin-users">
+    <div class="row pb-3">
+        <div class="col-12">
+            <% users.forEach(user => { %>
+                <div class="row py-2">
+                    <div class="col-12">
+                        <h4><%= `${user.name.first} ${user.name.last}` %></h4>
+                        <p><%= user.email %></p>
+                        <p>Admin: <%= user.admin %></p>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</div>

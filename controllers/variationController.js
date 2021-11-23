@@ -7,9 +7,8 @@ module.exports = {
     getAll: (req, res, next) => {
         Variation.find({})
         .then(variations => {
-            res.json(variations);
-            // res.locals.variations = variations;  
-            // next();
+            res.locals.variations = variations;  
+            next();
         }).catch(err => {
             console.log(`Error retrieving variations: ${error.message}`);
             next(error);

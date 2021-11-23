@@ -35,6 +35,27 @@ module.exports = {
   indexView: (req, res) => {
     res.render("shop/category");
   },
+  getAll: (req, res, next) => {
+    Category.find({})
+    .then(categories => {
+      res.locals.categories = categories;
+      next();
+    }).catch(err => {
+      console.log(`Error retrieving categories: ${err.message}`);
+      next(err);
+    })
+  },
+  getOne: (req, res, next) => {
+    Category.find({
+      slug: req.body.catSlug
+    }).then(category => {
+      res.locals.category = category;
+      next();
+    }).catch(err => {
+      console.log(`Error retrieving category: ${error.message}`);
+      next(error);
+    })
+  },
   create: (req, res, next) => {
     let catParams = {
       slug: req.body.slug,

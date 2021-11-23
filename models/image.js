@@ -4,7 +4,7 @@ const mongoose = require("mongoose"),
     { Schema } = mongoose,
     imageSchema = new Schema({
         title: {
-            type: String,
+            type: String
         },
         alt: {
             type: String

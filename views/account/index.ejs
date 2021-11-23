@@ -7,112 +7,21 @@
     <div class="card overflow-hidden">
         <div class="row no-gutters row-bordered row-border-light p-3">
             <div class="col-md-3 pt-0">
-                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link active" id="account-general-tab" data-bs-toggle="pill" data-bs-target="#account-general" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Account Details</button>
-                    <button class="nav-link" id="account-addresses-tab" data-bs-toggle="pill" data-bs-target="#account-addresses" type="button" role="tab" aria-controls="v-pills-addresses" aria-selected="false">Orders</button>
-                    <button class="nav-link" id="account-change-password-tab" data-bs-toggle="pill" data-bs-target="#account-change-password" type="button" role="tab" aria-controls="v-pills-change-password" aria-selected="false">Addresses</button>
-                    <button class="nav-link" id="account-logout-tab" data-bs-toggle="pill" data-bs-target="#account-logout" type="button" role="tab" aria-controls="v-pills-logout" aria-selected="false">Logout</button>
+                <div class="nav flex-column nav-pills me-3" id="v-pills-tab">
+                    <button class="nav-link active" id="account-general-tab" data-bs-toggle="pill" data-bs-target="#account-general" type="button">Account Details</button>
+                    <button class="nav-link" id="account-addresses-tab" data-bs-toggle="pill" data-bs-target="#account-addresses" type="button">Orders</button>
+                    <button class="nav-link" id="account-change-password-tab" data-bs-toggle="pill" data-bs-target="#account-change-password">Addresses</button>
+                    <button class="nav-link" id="account-logout-tab" data-bs-toggle="pill" data-bs-target="#account-logout">Logout</button>
                 </div>
             </div>
             <div class="col-md-9">
                 <div class="tab-content h-100" id="v-pills-tabContent">
+                    
+                    <%- include('account-details') %>
+                    <%- include('account-orders') %>
+                    <%- include('account-addresses') %>
+                    <%- include('account-logout') %>
 
-                    <div class="tab-pane fade show active" id="account-general" role="tabpanel" aria-labelledby="account-general-tab">
-                        <form action="/account/update" method="POST" role="form" encType="multipart/form-data">
-                            <div class="row pb-3 align-items-center">
-                                <div class="col-auto">
-                                    <% if(currentUser.profileImage) { %>
-                                        <img src="<%= `/img/${currentUser.profileImage.url}` %>" alt="<%= `${currentUser.profileImage.alt}` %>" class="d-block ui-w-125 rounded-circle">
-                                    <% } else { %>
-                                        <img src="/img/account/blank-user.jpg" alt="" class="d-block ui-w-125 rounded-circle">
-                                    <% } %>
-                                </div>
-                                <div class="col-auto">
-                                    <label class="btn btn-outline-primary">
-                                        Upload new photo
-                                        <input type="file" name="image" id="image" class="account-settings-fileinput">
-                                    </label>
-                                    <div class="text-light small mt-1">Allowed JPG, JPEG, or PNG</div>
-                                </div>
-                            </div>
-                            <hr class="border-light m-0">
-                            <div class="form-group col-8 py-2">
-                                <label class="form-label">First Name</label>
-                                <input type="text" class="form-control mt-1" id="fName" name="fName" placeholder="First Name" value="<%= currentUser.name.first %>" required>
-                            </div>
-                            <div class="form-group col-8 py-2">
-                                <label class="form-label">Last Name</label>
-                                <input type="text" class="form-control mt-1" id="lName" name="lName" placeholder="Last Name" value="<%= currentUser.name.last %>" required>
-                            </div>
-                            <div class="form-group col-8 py-2">
-                                <label class="form-label">E-mail</label>
-                                <input type="email" class="form-control mt-1" id="email" name="email" placeholder="Email" value="<%= currentUser.email %>" required>
-                            </div>
-                            <div class="form-group col-8 py-2">
-                                <button type="submit" class="btn btn-success btn-lg px-3">Update</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="tab-pane fade" id="account-addresses" role="tabpanel" aria-labelledby="account-addresses-tab">
-                        <div class="card-body pb-2">
-                            <div class="form-group">
-                                <label class="form-label">Bio</label>
-                                <textarea class="form-control"
-                                    rows="5">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris nunc arcu, dignissim sit amet sollicitudin iaculis, vehicula id urna. Sed luctus urna nunc. Donec fermentum, magna sit amet rutrum pretium, turpis dolor molestie diam, ut lacinia diam risus eleifend sapien. Curabitur ac nibh nulla. Maecenas nec augue placerat, viverra tellus non, pulvinar risus.</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Birthday</label>
-                                <input type="text" class="form-control" value="May 3, 1995">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Country</label>
-                                <select class="custom-select">
-                                    <option>USA</option>
-                                    <option selected="">Canada</option>
-                                    <option>UK</option>
-                                    <option>Germany</option>
-                                    <option>France</option>
-                                </select>
-                            </div>
-                        </div>
-                        <hr class="border-light m-0">
-                        <div class="card-body pb-2">
-                            <h6 class="mb-4">Contacts</h6>
-                            <div class="form-group">
-                                <label class="form-label">Phone</label>
-                                <input type="text" class="form-control" value="+0 (123) 456 7891">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Website</label>
-                                <input type="text" class="form-control" value="">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="account-change-password" role="tabpanel" aria-labelledby="account-change-password-tab">
-                        <div class="card-body pb-2">
-                            <div class="form-group">
-                                <label class="form-label">Current password</label>
-                                <input type="password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">New password</label>
-                                <input type="password" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">Repeat new password</label>
-                                <input type="password" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade h-100" id="account-logout" role="tabpanel" aria-labelledby="account-logout-tab">
-                        <div class="row pb-3">
-                            <h4>Are you sure you want to log out?</h4>
-                            <a href="/account/logout">Confirm and Logout</a>
-                        </div> 
-                    </div>
                 </div>
             </div>
         </div>

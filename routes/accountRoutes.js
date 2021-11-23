@@ -1,7 +1,14 @@
 "use strict";
 
 const router = require("express").Router(),
-  accountController = require("../controllers/accountController");
+  accountController = require("../controllers/accountController"),
+  contactController = require("../controllers/contactController"),
+  subscriberController = require("../controllers/subscriberController"),
+  productController = require("../controllers/productController"),
+  categoryController = require("../controllers/categoryController"),
+  variationController = require("../controllers/variationController"),
+  imageController = require("../controllers/imageController"),
+  orderController = require("../controllers/orderController");
 
 // Verify logged in
 router.use(accountController.verifyLoggedIn);
@@ -15,6 +22,16 @@ router.post("/update", accountController.updateGeneral, accountController.redire
 // Verify Admin
 router.use(accountController.verifyAdmin);
 
-router.get("/admin", accountController.adminIndex);
+router.get(
+  "/admin",
+  contactController.getAll,
+  subscriberController.getAll,
+  productController.getAll,
+  categoryController.getAll,
+  variationController.getAll,
+  imageController.getAll,
+  accountController.getAll,
+  // orderController.getAll,
+  accountController.adminIndex);
 
 module.exports = router;

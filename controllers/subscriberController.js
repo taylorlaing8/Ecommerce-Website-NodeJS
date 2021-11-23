@@ -4,6 +4,16 @@ const Subscriber = require("../models/subscriber"),
   httpStatus = require("http-status-codes");
 
 module.exports = {
+    getAll: (req, res, next) => {
+        Subscriber.find({})
+        .then(subscribers => {
+            res.locals.subscribers = subscribers;
+            next();
+        }).catch(err => {
+            console.log(`Error retrieving subscribers: ${err.message}`);
+            next(err);
+        })
+    },
     subscribe: (req, res, next) => {
         let subsParams = {
             email: req.body.email,

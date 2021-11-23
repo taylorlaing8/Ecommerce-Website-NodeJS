@@ -4,6 +4,16 @@ const Image = require("../models/image"),
   httpStatus = require("http-status-codes");
 
 module.exports = {
+    getAll: (req, res, next) => {
+        Image.find({})
+        .then(images => {
+            res.locals.images = images;
+            next();
+        }).catch(err => {
+            console.log(`Error retrieving images: ${err.message}`);
+            next(err);
+        })
+    },
     upload: (req, res) => {
         let imgParams = {
             title: req.body.title,

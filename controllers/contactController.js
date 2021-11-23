@@ -7,6 +7,16 @@ module.exports = {
     index: (req, res) => {
         res.render("contact/index");
     },
+    getAll: (req, res, next) => {
+        Contact.find({})
+        .then(contacts => {
+            res.locals.contacts = contacts;
+            next();
+        }).catch(err => {
+            console.log(`Error retrieving contact submissions: ${err.message}`);
+            next(err);
+        })
+    },
     submit: (req, res, next) => {
         let contParams = {
             name: req.body.name,

@@ -1,0 +1,39 @@
+
+<div class="container light-style flex-grow-1 container-p-y py-5">
+
+    <h4 class="font-weight-bold py-3 mb-4">
+        Admin Panel
+    </h4>
+
+    <div class="card overflow-hidden">
+        <div class="row no-gutters row-bordered row-border-light p-3">
+            <div class="col-md-2 pt-0">
+                <div class="nav flex-column nav-pills me-3" id="v-pills-tab">
+                    <button class="nav-link active" id="admin-orders-tab" data-bs-toggle="pill" data-bs-target="#admin-orders" type="button">Orders</button>
+                    <button class="nav-link" id="admin-products-tab" data-bs-toggle="pill" data-bs-target="#admin-products" type="button">Products</button>
+                    <button class="nav-link" id="admin-categories-tab" data-bs-toggle="pill" data-bs-target="#admin-categories" type="button">Categories</button>
+                    <button class="nav-link" id="admin-variations-tab" data-bs-toggle="pill" data-bs-target="#admin-variations" type="button">Variations</button>
+                    <button class="nav-link" id="admin-images-tab" data-bs-toggle="pill" data-bs-target="#admin-images" type="button">Images</button>
+                    <button class="nav-link" id="admin-contacts-tab" data-bs-toggle="pill" data-bs-target="#admin-contacts" type="button">Contacts</button>
+                    <button class="nav-link" id="admin-subscribers-tab" data-bs-toggle="pill" data-bs-target="#admin-subscribers" type="button">Subscribers</button>
+                    <button class="nav-link" id="admin-users-tab" data-bs-toggle="pill" data-bs-target="#admin-users" type="button">Users</button>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="tab-content h-100" id="v-pills-tabContent">
+                    
+                    <%- include('admin-orders') %>
+                    <%- include('admin-products') %>
+                    <%- include('admin-categories') %>
+                    <%- include('admin-variations') %>
+                    <%- include('admin-images') %>
+                    <%- include('admin-contact-requests') %>
+                    <%- include('admin-subscribers') %>
+                    <%- include('admin-users') %>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

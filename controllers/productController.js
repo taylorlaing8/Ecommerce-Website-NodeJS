@@ -23,6 +23,16 @@ module.exports = {
     indexView: (req, res) => {
         res.render("product/index");
     },
+    getAll: (req, res, next) => {
+        Product.find({}).populate('variation').populate('category').populate('images')
+        .then(products => {
+            res.locals.products = products;
+            next();
+        }).catch(err => {
+            console.log(`Error retrieving products: ${err.message}`);
+            next(err);
+        })
+    },
     create: (req, res, next) => {
         let prodParams = {
             slug: req.body.slug,
