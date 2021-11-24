@@ -1,0 +1,68 @@
+<input type="hidden" name="id" value="<%= product ? product._id : '' %>">
+<div class="form-group col-12 py-2">
+    <label class="form-label">Title</label>
+    <input type="text" class="form-control mt-1" id="title" name="title" placeholder="Product Title" value="<%= product ? product.title : '' %>" required>
+</div>
+<div class="form-group col-6 py-2">
+    <label class="form-label">Slug</label>
+    <input type="text" class="form-control mt-1" id="slug" name="slug" placeholder="Product Slug" value="<%= product ? product.slug : '' %>" required>
+</div>
+<div class="form-group col-6 py-2">
+    <label class="form-label">SKU</label>
+    <input type="text" class="form-control mt-1" id="sku" name="sku" placeholder="Product SKU" value="<%= product ? product.sku : '' %>" required>
+</div>
+<div class="form-group col-6 py-2">
+    <label class="form-label">Category</label>
+    <select class="form-control mt-1" id="category" name="category">
+        <% categories.forEach(category => { 
+            let selected = ""
+            if (product && (product.category.category == category.category)) selected = "selected" %>
+            <option value="<%= category._id %>" <%= selected %> ><%= category.category %></option>
+        <% }) %>
+    </select>
+</div>
+<div class="form-group col-6 py-2">
+    <label class="form-label">Price</label>
+    <!-- <div class="input-group-prepend">
+        <span class="input-group-text">$</span>
+    </div> -->
+    <input type="text" class="form-control" id="price" name="price" placeholder="0.00" value="<%= product ? product.price : ''%>" required>
+</div>
+<div class="form-group col-12 py-2">
+    <label class="form-label">Variations (Hold Ctl or Cmd to select multiple)</label><br>
+    <!-- <div class="btn-group btn-group-sm" role="group" aria-label="Basic checkbox toggle button group">
+        <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btncheck1">Checkbox 1</label>
+        
+        <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btncheck2">Checkbox 2</label>
+        
+        <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
+        <label class="btn btn-outline-primary" for="btncheck3">Checkbox 3</label>
+    </div>               -->
+    
+    <!-- <select class="form-control mt-1 selectpicker" id="variations" name="variations" multiple> -->
+    <select class="form-control mt-1" id="variations" name="variations" multiple>
+        <% variationTypes.forEach(variationType => {
+            let selected = "";
+        %>
+        <optgroup label="<%= variationType.name %>">
+        <% variations.forEach(variation => {
+                if(variation.type.slug == variationType.slug) {
+                    if(product) selected = "selected"; %>
+                        <option value="<%= variation._id %>"><%= variation.name %></option>
+                    <%
+                }
+            });
+        %>
+        </optgroup>
+        <% }); %>
+    </select>
+</div>
+<div class="form-group col-12 py-2">
+    <label class="form-label">Description</label>
+    <input type="textarea" class="form-control" id="description" name="description" placeholder="Product Description..." value="<%= product ? product.description : ''%>" required>
+</div>
+<div class="form-group col-8 py-2">
+    <button type="submit" class="btn btn-success btn-lg px-3"><%= product ? 'Update' : 'Create' %></button>
+</div>

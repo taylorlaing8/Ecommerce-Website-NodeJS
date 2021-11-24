@@ -1,0 +1,30 @@
+<div class="tab-pane fade" id="product-details">
+    <div class="row pb-3">
+        <div class="col-12 table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr class="table-active">
+                        <th class="align-middle"></th>
+                        <th class="align-middle">Title</th>
+                        <th class="align-middle">Slug</th>
+                        <th class="align-middle">SKU</th>
+                        <th class="align-middle">Category</th>
+                        <th class="align-middle">Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="align-middle"><img style="width: 60px; height: 60px; object-fit: cover" src="<%= product.images[0].url %>" alt="<%= product.images[0].alt %>"></td>
+                        <td class="align-middle"><%= product.title %></td>
+                        <td class="align-middle"><%= product.slug %></td>
+                        <td class="align-middle"><%= product.sku %></td>
+                        <td class="align-middle"><%= product.category.category %></td>
+                        <td class="align-middle">$<%= product.price %></td>
+                        <td class="align-middle"><button type="button" class="btn btn-outline-secondary btn-sm" href="<%=`account/admin/products/${product.slug}`%>">Edit</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

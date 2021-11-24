@@ -2,15 +2,11 @@
 
 const mongoose = require("mongoose"),
     { Schema } = mongoose,
-    variationSchema = new Schema({
+    variationTypeSchema = new Schema({
         name: {
             type: String,
             required: true,
             trim: true
-        },
-        type: {
-            type: Schema.Types.ObjectId, 
-            ref: "VariationType" 
         },
         slug: {
             type: String,
@@ -19,4 +15,4 @@ const mongoose = require("mongoose"),
         },
     });
 
-module.exports = mongoose.model("Variation", variationSchema, 'cVariation');
+module.exports = mongoose.model("VariationType", variationTypeSchema, 'cVariationType');

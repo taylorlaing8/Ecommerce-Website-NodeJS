@@ -1,6 +1,8 @@
 "use strict";
 
 const Product = require("../models/product"),
+    Category = require("../models/category"),
+    Variation = require("../models/variation"),
     httpStatus = require("http-status-codes");
 
 module.exports = {
@@ -23,8 +25,11 @@ module.exports = {
     indexView: (req, res) => {
         res.render("product/index");
     },
+    adminIndexView: (req, res) => {
+        res.render("admin/product/index");
+    },
     getAll: (req, res, next) => {
-        Product.find({}).populate('variation').populate('category').populate('images')
+        Product.find({}).populate('variations').populate('category').populate('images')
         .then(products => {
             res.locals.products = products;
             next();
@@ -63,14 +68,15 @@ module.exports = {
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
-            // variation: [req.body.variation],
+            variations: req.body.variations,
             category: req.body.category,
             // images: [req.body.images]
         };
 
-        Product.create(prodParams)
-        .then(product => {
-            res.locals.redirect = "/product";
+        Product.findByIdAndUpdate(req.body.id, {
+            $set: prodParams
+        }).then(product => {
+            res.locals.redirect = `/admin/products/${product.slug}`;
             res.locals.product = product;
             next();
         })

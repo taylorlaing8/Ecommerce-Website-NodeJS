@@ -12,8 +12,9 @@ const router = require("express").Router(),
     cartRoutes = require("./cartRoutes"),
     orderRoutes = require("./orderRoutes"),
     accountRoutes = require("./accountRoutes"),
+    adminRoutes = require("./adminRoutes"),
     errorRoutes = require("./errorRoutes");
-
+    
 router.use("/contact", contactRoutes);
 router.use("/subscriber", subscriberRoutes);
 router.use("/shop", shopRoutes);
@@ -24,6 +25,7 @@ router.use("/image", imageRoutes);
 router.use("/cart", cartRoutes);
 router.use("/order", orderRoutes);
 router.use("/account", accountRoutes);
+router.use("/admin", adminRoutes);
 router.use("/", homeRoutes);
 router.use("/", errorRoutes);
 

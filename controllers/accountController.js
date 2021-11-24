@@ -30,8 +30,8 @@ module.exports = {
         if (req.user && req.user.admin == true) {
             next();
         } else {
-            res.send("You are not authorized to access this resource.");
-            // next(new Error("You are not authorized to access this resource."));
+            req.flash("error", "You are not authorized to access this resource.");
+            res.redirect("/account");
         }
     },
     index: (req, res) => {
@@ -154,7 +154,8 @@ module.exports = {
     authenticate: passport.authenticate("local", {
         failureRedirect: "/login",
         failureFlash: "Login failed: Check that you are using the correct username or password.",
-        successRedirect: "/"
+        successReturnToOrRedirect: "/",
+        successFlash: "Logged in!"
     }),
     verifyJWT: (req, res, next) => {
         let token = req.headers.token;
@@ -232,7 +233,19 @@ module.exports = {
             next();
         }
     },
+    // getBreadcrumbs: (req, res, next) => {
+    //     console.log('paths', req.originalUrl, req.baseUrl, req.path);
+    //     let path = req.originalUrl;
+    //     let pathItems = {};
+    //     path.slice(1, path.length).split("/").forEach(item => {
+    //         let itemIndex = path.indexOf(item);
+    //         let itemLength = item.length;
+    //         let breadcrumb = path.slice(0, (itemIndex + itemLength));
+    //         pathItems[item] = `<a href="${breadcrumb}">${item.toUpperCase()}</a>`;
+    //     })
 
+    //     console.log(pathItems);
+    // },
     redirectView: (req, res, next) => {
         let redirectPath = res.locals.redirect;
         if (redirectPath !== undefined) res.redirect(redirectPath);

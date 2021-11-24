@@ -26,7 +26,7 @@ const mongoose = require("mongoose"),
             type: Number,
             required: true
         },
-        variation: [{ 
+        variations: [{ 
             type: Schema.Types.ObjectId, 
             ref: "Variation" 
         }],

@@ -1,11 +1,12 @@
 "use strict";
 
 const Variation = require("../models/variation"),
+    VariationType = require("../models/variationType"),
     httpStatus = require("http-status-codes");
 
 module.exports = {
-    getAll: (req, res, next) => {
-        Variation.find({})
+    getAllVars: (req, res, next) => {
+        Variation.find({}).populate('type')
         .then(variations => {
             res.locals.variations = variations;  
             next();
@@ -14,9 +15,9 @@ module.exports = {
             next(error);
         })
     },
-    getOne: (req, res, next) => {
+    getOneVar: (req, res, next) => {
         let varSlug = req.params.varSlug;
-        Variation.findOne({ slug: varSlug })
+        Variation.findOne({ slug: varSlug }).populate('type')
         .then(variation => {
             res.locals.variation = variation;
             next();
@@ -25,9 +26,31 @@ module.exports = {
             next(error);
         })
     },
+    getAllVarTypes: (req, res, next) => {
+        VariationType.find({})
+        .then(variationTypes => {
+            res.locals.variationTypes = variationTypes;  
+            next();
+        }).catch(err => {
+            console.log(`Error retrieving variation types: ${error.message}`);
+            next(error);
+        })
+    },
+    getOneVarType: (req, res, next) => {
+        let varTypeSlug = req.params.varTypeSlug;
+        Variation.findOne({ slug: varTypeSlug })
+        .then(variationType => {
+            res.locals.variationType = variationType;
+            next();
+        }).catch(err => {
+            console.log(`Error retrieving variation type: ${error.message}`);
+            next(error);
+        })
+    },
     create: (req, res, next) => {
         let varParams = {
             name: req.body.name,
+            type: req.body.type,
             slug: req.body.slug
         };
 
@@ -37,6 +60,21 @@ module.exports = {
         })
         .catch(error => {
             console.log(`Error saving variation: ${error.message}`);
+            next(error);
+        })
+    },
+    createType: (req, res, next) => {
+        let varTypeParams = {
+            name: req.body.name,
+            slug: req.body.slug
+        };
+
+        VariationType.create(varTypeParams)
+        .then(variationType => {
+            next();
+        })
+        .catch(error => {
+            console.log(`Error saving variation type: ${error.message}`);
             next(error);
         })
     },

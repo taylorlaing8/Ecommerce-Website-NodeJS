@@ -148,3 +148,17 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
     padding: 0.85rem 1.5rem;
     border-color: rgba(24,28,33,0.03) !important;
 }
+
+/***** ADMIN *****/
+.admin-table {
+    width: 100%;
+}
+.admin-table th {
+    
+}
+.admin-table img {
+    height: 75px;
+    width: 75px;
+    object-fit: cover;
+    padding: 0.25rem;
+}
