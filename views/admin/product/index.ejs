@@ -10,7 +10,10 @@
             <div class="col-md-2 pt-0">
                 <div class="nav flex-column nav-pills me-3" id="v-pills-tab">
                     <button class="nav-link active" id="product-details-tab" data-bs-toggle="pill" data-bs-target="#product-details" type="button">Details</button>
-                    <% if(product) { %><button class="nav-link" id="product-images-tab" data-bs-toggle="pill" data-bs-target="#product-images" type="button">Images</button><% } %>
+                    <% if(product) { %>
+                        <button class="nav-link" id="product-images-tab" data-bs-toggle="pill" data-bs-target="#product-images" type="button">Images</button>
+                        <button class="nav-link" id="product-delete-tab" data-bs-toggle="pill" data-bs-target="#product-delete" type="button">Delete</button>
+                    <% } %>
                 </div>
             </div>
             <div class="col-md-10">
@@ -19,6 +22,7 @@
                     <%- include('product-details') %>
                     <% if(product) { %>
                         <%- include('product-images') %>
+                        <%- include('product-remove') %>
                     <% } %>
 
                 </div>

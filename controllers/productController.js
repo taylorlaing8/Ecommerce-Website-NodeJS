@@ -126,6 +126,21 @@ module.exports = {
             })
         }
     },
+    remove: (req, res, next) => {
+        let prodSlug = req.params.slug;
+        Product.findOneAndDelete({
+            slug: prodSlug
+        }).then(resizeTo => {
+            req.flash("success", `Product Successfully Removed!`);
+            res.locals.redirect = `/admin`;
+            next();
+        })
+        .catch(error => {
+            req.flash("error", `Error removing product.`);
+            res.locals.redirect = `/admin/products/${product.slug}`;
+            next();
+        })
+    },
     redirectView: (req, res, next) => {
         let redirectPath = res.locals.redirect;
         if (redirectPath !== undefined) res.redirect(redirectPath);
