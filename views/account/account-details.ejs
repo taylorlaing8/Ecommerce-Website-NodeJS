@@ -3,7 +3,7 @@
         <div class="row pb-3 align-items-center">
             <div class="col-auto">
                 <% if(currentUser.profileImage) { %>
-                    <img src="<%= `/img/${currentUser.profileImage.url}` %>" alt="<%= `${currentUser.profileImage.alt}` %>" class="d-block ui-w-125 rounded-circle">
+                    <img src="<%= `${currentUser.profileImage.url}` %>" alt="<%= `${currentUser.profileImage.alt}` %>" class="d-block ui-w-125 rounded-circle">
                 <% } else { %>
                     <img src="/img/account/blank-user.jpg" alt="" class="d-block ui-w-125 rounded-circle">
                 <% } %>

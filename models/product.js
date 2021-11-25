@@ -28,10 +28,12 @@ const mongoose = require("mongoose"),
         },
         variations: [{ 
             type: Schema.Types.ObjectId, 
+            required: true,
             ref: "Variation" 
         }],
         category: {
             type: Schema.Types.ObjectId,
+            required: true,
             ref: "Category"
         },
         images: [{ 

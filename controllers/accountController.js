@@ -104,7 +104,7 @@ module.exports = {
             Image.create({
                 title: currentUser.name.first + ' Profile Image',
                 alt: currentUser.name.first + '_profile_image',
-                url: 'account/' + currentUser._id + '_profile_image.jpg'
+                url: '/img/account/' + currentUser._id + '_profile_image.jpg'
             }).then(img => {
                 userParams.profileImage = img._id;
                 imgFile.mv(uploadPath, (err) => {

@@ -10,14 +10,16 @@
             <div class="col-md-2 pt-0">
                 <div class="nav flex-column nav-pills me-3" id="v-pills-tab">
                     <button class="nav-link active" id="product-details-tab" data-bs-toggle="pill" data-bs-target="#product-details" type="button">Details</button>
-                    <button class="nav-link" id="product-images-tab" data-bs-toggle="pill" data-bs-target="#product-images" type="button">Images</button>
+                    <% if(product) { %><button class="nav-link" id="product-images-tab" data-bs-toggle="pill" data-bs-target="#product-images" type="button">Images</button><% } %>
                 </div>
             </div>
             <div class="col-md-10">
                 <div class="tab-content h-100" id="v-pills-tabContent">
                     
                     <%- include('product-details') %>
-                    <%- include('product-images') %>
+                    <% if(product) { %>
+                        <%- include('product-images') %>
+                    <% } %>
 
                 </div>
             </div>

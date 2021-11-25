@@ -1,5 +1,6 @@
 <div class="tab-pane fade active show" id="product-details">
-    <form action="/product/update" method="POST" role="form" class="row">
+    <form action="<%= `/product/${product ? 'update' : 'create'}` %>" method="POST" role="form" class="row">
+        <h2 style="text-align: center;"><%= product ? "Update Product" : "Create Product" %></h2>
         <%- include('product-form') %>
     </form>
 </div>

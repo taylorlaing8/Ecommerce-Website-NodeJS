@@ -27,7 +27,15 @@ router.get(
     accountController.getAll,
     // orderController.getAll,
     accountController.adminIndex
-  );
+);
+
+router.get(
+    "/product/create",
+    categoryController.getAll,
+    variationController.getAllVars,
+    variationController.getAllVarTypes,
+    productController.adminIndexView
+);
 
 router.get(
     "/products/:slug",
