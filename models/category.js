@@ -7,7 +7,7 @@ const mongoose = require("mongoose"),
             type: String,
             required: true
         },
-        category: {
+        title: {
             type: String,
             required: true
         },

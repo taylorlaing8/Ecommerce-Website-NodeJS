@@ -1,0 +1,31 @@
+
+<div class="container light-style flex-grow-1 container-p-y py-5">
+
+    <h4 class="font-weight-bold py-3 mb-4">
+        <a class="h4" style="color:inherit; font-size: inherit !important; font-weight: inherit !important;" href="/admin">Admin Panel</a> > Variation > <%= variation ? variation.name : '' %>
+    </h4>
+
+    <div class="card overflow-hidden">
+        <div class="row no-gutters row-bordered row-border-light px-3 py-4">
+            <div class="col-md-2 pt-0">
+                <div class="nav flex-column nav-pills me-3" id="v-pills-tab">
+                    <button class="nav-link active" id="variation-details-tab" data-bs-toggle="pill" data-bs-target="#variation-details" type="button">Details</button>
+                    <% if(variation) { %>
+                        <button class="nav-link" id="variation-delete-tab" data-bs-toggle="pill" data-bs-target="#variation-delete" type="button">Delete</button>
+                    <% } %>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="tab-content h-100" id="v-pills-tabContent">
+                    
+                    <%- include('variation-details') %>
+                    <% if(variation) { %>
+                        <%- include('variation-remove') %>
+                    <% } %>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

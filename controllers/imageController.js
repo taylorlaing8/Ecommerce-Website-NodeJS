@@ -14,7 +14,7 @@ module.exports = {
             next(err);
         })
     },
-    upload: (req, res) => {
+    upload: (req, res, next) => {
         let imgParams = {
             title: req.body.title,
             alt: req.body.alt,
@@ -35,7 +35,12 @@ module.exports = {
             })
         })
     },
+    update: (req, res, next) => {
 
+    },
+    remove: (req, res, next) => {
+
+    },
     redirectView: (req, res, next) => {
         let redirectPath = res.locals.redirect;
         if (redirectPath !== undefined) res.redirect(redirectPath);

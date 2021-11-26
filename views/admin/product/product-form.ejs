@@ -16,8 +16,8 @@
     <select class="form-control mt-1" id="category" name="category">
         <% categories.forEach(category => { 
             let selected = ""
-            if (product && (product.category.category == category.category)) selected = "selected" %>
-            <option value="<%= category._id %>" <%= selected %> ><%= category.category %></option>
+            if (product && (product.category.title == category.title)) selected = "selected" %>
+            <option value="<%= category._id %>" <%= selected %> ><%= category.title %></option>
         <% }) %>
     </select>
 </div>
@@ -32,8 +32,9 @@
     <label class="form-label">Variations</label><br>
 
     <% variationTypes.forEach((varType, index) => { %>
-        <div class="row">
-            <div class="btn-group col-auto py-2" role="group" aria-label="Basic radio toggle button group">
+        <div class="row align-it">
+            <div class="btn-group col-auto py-2 align-items-center" role="group" aria-label="Basic radio toggle button group">
+                <% if(variations.filter(v => v.type._id.equals(varType._id)).length > 0) { %><p class="my-0 pe-2"><%= varType.name %><br></p> <% } %>
             <%  let checked = "";
             variations.forEach(variation => {
                 if(product) {

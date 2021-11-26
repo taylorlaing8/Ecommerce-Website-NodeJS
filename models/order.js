@@ -7,11 +7,42 @@ const mongoose = require("mongoose"),
             type: Schema.Types.ObjectId,
             ref: "User"
         },
+        shippingAddress: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: "Address"
+        },
+        billingAddress: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: "Address"
+        },
+        items: [{ 
+            type: Schema.Types.ObjectId, 
+            ref: "Product" 
+        }],
+        lineItems: { // Line items (total, subtotal, tax, discounts, etc.)
+            type: {
+                subtotal: {
+                    type: Number,
+                    required: true
+                },
+                tax: {
+                    type: Number
+                },
+                discount: {
+                    type: Number,
+                },
+                total: {
+                    type: Number
+                }
+            }
+        },
         status: { // 'placed', 'processing', 'shipped', 'delivered'
             type: String,
             required: true
         },
-        cart: { // What cart placed the order to get the items and line items
+        cart: { // What cart placed the order
             type: Schema.Types.ObjectId,
             ref: "Cart"
         }

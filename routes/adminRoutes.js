@@ -15,6 +15,7 @@ const router = require("express").Router(),
 router.use(ensureLoggedIn("/login"));
 router.use(accountController.verifyAdmin);
 
+// Dashboard
 router.get(
     "/",
     contactController.getAll,
@@ -29,6 +30,7 @@ router.get(
     accountController.adminIndex
 );
 
+// Products Controller
 router.get(
     "/product/create",
     categoryController.getAll,
@@ -36,14 +38,37 @@ router.get(
     variationController.getAllVarTypes,
     productController.adminIndexView
 );
-
 router.get(
-    "/products/:slug",
+    "/product/:slug",
     productController.index,
     categoryController.getAll,
     variationController.getAllVars,
     variationController.getAllVarTypes,
     productController.adminIndexView
+);
+
+// Categories Controller
+router.get(
+    "/category/create",
+    categoryController.adminIndexView
+);
+router.get(
+    "/category/:slug",
+    categoryController.index,
+    categoryController.adminIndexView
+);
+
+// Variations Controller
+router.get(
+    "/variation/create",
+    variationController.getAllVarTypes,
+    variationController.adminIndexView
+);
+router.get(
+    "/variation/:slug",
+    variationController.index,
+    variationController.getAllVarTypes,
+    variationController.adminIndexView
 );
 
 module.exports = router;

@@ -1,0 +1,24 @@
+<input type="hidden" name="id" value="<%= variation ? variation._id : '' %>">
+<div class="form-group col-6 py-2">
+    <label class="form-label">Name</label>
+    <input type="text" class="form-control mt-1" id="name" name="name" placeholder="Variation Name" value="<%= variation ? variation.name : '' %>" required>
+</div>
+<div class="form-group col-6 py-2">
+    <label class="form-label">Slug</label>
+    <input type="text" class="form-control mt-1" id="slug" name="slug" placeholder="Variation Slug" value="<%= variation ? variation.slug : '' %>" required>
+</div>
+<div class="form-group col-12 py-2">
+    <label class="form-label">Type</label><br>
+    <div class="row">
+        <% variationTypes.forEach(varType => { %>
+            <div class="btn-group col-auto py-2" role="group" aria-label="Basic radio toggle button group">
+                <% let checked = (variation && variation.type._id.equals(varType._id)) ? "checked" : ''; %>
+                    <input type="radio" class="btn-check" name="type" id="<%=`btncheck${varType._id}`%>" value="<%= varType._id %>" <%= checked %> autocomplete="off" required>
+                    <label class="btn btn-outline-primary" for="<%=`btncheck${varType._id}`%>"><%= varType.name %></label>
+            </div>
+        <% }); %>
+    </div>
+</div>
+<div class="form-group col-8 py-2">
+    <button type="submit" class="btn btn-success btn-lg px-3"><%= variation ? 'Update' : 'Create' %></button>
+</div>

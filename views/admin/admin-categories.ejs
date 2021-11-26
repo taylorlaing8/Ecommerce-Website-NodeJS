@@ -1,13 +1,31 @@
 <div class="tab-pane fade" id="admin-categories">
     <div class="row pb-3">
         <div class="col-12">
-            <% categories.forEach(category => { %>
-                <div class="row py-2">
-                    <div class="col-4">
-                        <h4><%= category.category %></h4>
-                    </div>
+            <div class="row pb-3 justify-content-end">
+                <div class="col-auto">
+                    <a role="button" class="btn btn-primary btn-sm" href="<%=`/admin/category/create`%>">+ New Category</a>
                 </div>
-            <% }) %>
+            </div>
+            <table class="table">
+                <thead class="thead-light">
+                    <tr class="table-active">
+                        <th class="align-middle">Title</th>
+                        <th class="align-middle">Slug</th>
+                        <th class="align-middle">Description</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% categories.forEach(category => { %>
+                        <tr>
+                            <td class="align-middle"><%= category.title %></td>
+                            <td class="align-middle"><%= category.slug %></td>
+                            <td class="align-middle"><%= category.description %></td>
+                            <td class="align-middle"><a role="button" class="btn btn-outline-secondary btn-sm" href="<%=`/admin/category/${category.slug}`%>">Edit</a></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

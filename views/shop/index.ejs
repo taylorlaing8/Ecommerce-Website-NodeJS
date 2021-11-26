@@ -28,7 +28,7 @@
                 <li class="pb-3">
                     <% categories.forEach(category => { %>
                     <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="<%= `/shop/${category.slug}` %>">
-                        <%= category.category %>
+                        <%= category.title %>
                     </a>
                     <% }) %>
                 </li>

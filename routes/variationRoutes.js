@@ -3,11 +3,9 @@
 const router = require("express").Router(),
     variationController = require("../controllers/variationController");
 
-router.get("/", variationController.getAllVars);
-router.post("/create", variationController.create);
-router.post("/type/create", variationController.createType);
-router.get("/type/all", variationController.getAllVarTypes);
-router.get("/type/single/:varTypeSlug", variationController.getOneVarType);
-router.get("/single/:varSlug", variationController.getOneVar);
+router.post("/create", variationController.create, variationController.redirectView);
+router.post("/update", variationController.update, variationController.redirectView);
+router.get("/:slug", variationController.index, variationController.redirectView);
+router.post("/:slug/remove", variationController.remove, variationController.redirectView);
 
 module.exports = router;

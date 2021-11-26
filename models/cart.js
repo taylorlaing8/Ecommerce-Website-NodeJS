@@ -27,10 +27,6 @@ const mongoose = require("mongoose"),
                     type: Number
                 }
             }
-        },
-        order: { // Null unless cart was ordered and then given the association to the order ID
-            type: Schema.Types.ObjectId,
-            ref: "Order"
         }
     });
 

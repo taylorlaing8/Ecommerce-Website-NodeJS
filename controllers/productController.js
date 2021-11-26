@@ -56,7 +56,7 @@ module.exports = {
             prodParams
         ).then(product => {
             req.flash("success", `Product Created Successfully!`);
-            res.locals.redirect = `/admin/products/${product.slug}`;
+            res.locals.redirect = `/admin/product/${product.slug}`;
             res.locals.product = product;
             next();
         })
@@ -81,13 +81,13 @@ module.exports = {
             $set: prodParams
         }).then(product => {
             req.flash("success", `Product Updated Successfully!`);
-            res.locals.redirect = `/admin/products/${product.slug}`;
+            res.locals.redirect = `/admin/product/${product.slug}`;
             res.locals.product = product;
             next();
         })
         .catch(error => {
             req.flash("error", `Error saving product.`);
-            res.locals.redirect = `/admin/products/${product.slug}`;
+            res.locals.redirect = `/admin/product/${product.slug}`;
             next();
         })
     },
@@ -112,16 +112,16 @@ module.exports = {
                     $addToSet: { images: imgId }
                 }).then(product => {
                     res.locals.product = product;
-                    res.locals.redirect = `/admin/products/${product.slug}`;
+                    res.locals.redirect = `/admin/product/${product.slug}`;
                     next();
                 }).catch(error => {
                     req.flash("error", "Error adding image to product")
-                    res.locals.redirect = `/admin/products/${product.slug}`;
+                    res.locals.redirect = `/admin/product/${product.slug}`;
                     next();
                 });
             }).catch(error => {
                 req.flash("error", "Error creating image")
-                res.locals.redirect = `/admin/products/${product.slug}`;
+                res.locals.redirect = `/admin/product/${product.slug}`;
                 next();
             })
         }
@@ -137,7 +137,7 @@ module.exports = {
         })
         .catch(error => {
             req.flash("error", `Error removing product.`);
-            res.locals.redirect = `/admin/products/${product.slug}`;
+            res.locals.redirect = `/admin/product/${product.slug}`;
             next();
         })
     },
