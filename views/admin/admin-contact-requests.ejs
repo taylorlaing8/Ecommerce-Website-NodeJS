@@ -1,14 +1,28 @@
 <div class="tab-pane fade" id="admin-contacts">
     <div class="row pb-3">
-        <div class="col-12">
-            <% contacts.forEach(contact => { %>
-                <div class="row py-2">
-                    <div class="col-12">
-                        <h4><%= contact.subject %></h4>
-                        <p><%= contact.message %></p>
-                    </div>
-                </div>
-            <% }) %>
+        <div class="col-12 table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr class="table-active">
+                        <th class="align-middle">Date</th>
+                        <th class="align-middle">Name</th>
+                        <th class="align-middle">Email</th>
+                        <th class="align-middle">Subject</th>
+                        <th class="align-middle">Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% contacts.forEach(contact => { %>
+                        <tr>
+                            <td class="align-middle"><%= contact.createdAt ? contact.createdAt.toLocaleString() : ""%></td>
+                            <td class="align-middle"><%= contact.name ? contact.name : "" %></td>
+                            <td class="align-middle"><%= contact.email ? contact.email : "" %></td>
+                            <td class="align-middle"><%= contact.subject ? contact.subject : "" %></td>
+                            <td class="align-middle"><%= contact.message ? `${contact.message.slice(0, 30)}...` : "" %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

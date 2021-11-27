@@ -71,4 +71,16 @@ router.get(
     variationController.adminIndexView
 );
 
+// Users Controller
+router.get(
+    "/user/:id/remove",
+    accountController.delete,
+    accountController.redirectView
+)
+router.get(
+    "/user/:id/:admin/toggle-admin",
+    accountController.toggleAdmin,
+    accountController.redirectView
+)
+
 module.exports = router;

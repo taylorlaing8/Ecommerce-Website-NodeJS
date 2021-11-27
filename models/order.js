@@ -12,11 +12,6 @@ const mongoose = require("mongoose"),
             required: true,
             ref: "Address"
         },
-        billingAddress: {
-            type: Schema.Types.ObjectId,
-            required: true,
-            ref: "Address"
-        },
         items: [{ 
             type: Schema.Types.ObjectId, 
             ref: "Product" 

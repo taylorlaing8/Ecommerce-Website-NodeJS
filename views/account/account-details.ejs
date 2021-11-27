@@ -1,11 +1,12 @@
 <div class="tab-pane fade show active" id="account-general">
     <form action="/account/update" method="POST" role="form" encType="multipart/form-data">
+        <input type="hidden" class="form-control mt-1" id="userId" name="userId" value="<%= currentUser._id %>" required>
         <div class="row pb-3 align-items-center">
             <div class="col-auto">
                 <% if(currentUser.profileImage) { %>
-                    <img src="<%= `${currentUser.profileImage.url}` %>" alt="<%= `${currentUser.profileImage.alt}` %>" class="d-block ui-w-125 rounded-circle">
+                    <img src="<%= `${currentUser.profileImage.url}` %>" alt="<%= `${currentUser.profileImage.alt}` %>" class="d-block ui-w-125 rounded">
                 <% } else { %>
-                    <img src="/img/account/blank-user.jpg" alt="" class="d-block ui-w-125 rounded-circle">
+                    <img src="/img/account/blank-user.jpg" alt="" class="d-block ui-w-125 rounded">
                 <% } %>
             </div>
             <div class="col-auto">

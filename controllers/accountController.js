@@ -3,6 +3,7 @@
 const { check, validationResult } = require("express-validator");
 const User = require("../models/user"),
     Image = require("../models/image"),
+    Address = require("../models/address"),
     passport = require("passport"),
     token = process.env.TOKEN || "cvtToken08$",
     jsonWebToken = require("jsonwebtoken"),
@@ -14,7 +15,6 @@ const User = require("../models/user"),
                 last: body.lname
             },
             email: body.email,
-            password: body.password
         }
     }
 module.exports = {
@@ -34,19 +34,32 @@ module.exports = {
             res.redirect("/account");
         }
     },
-    index: (req, res) => {
-        if(req.user.profileImage) {
-            User.findById(req.user._id).populate('profileImage')
-            .then(user => {
-                res.locals.currentUser = user;
-            })
-            .catch(err => {
-                console.log("Error fetching profile image");
-            })
-            .finally(() => {
-                res.render("account/index");
-            })
-        }
+    index: (req, res, next) => {
+        let currentUser = req.user;
+
+        User.findById(currentUser._id).populate('profileImage').populate('shipping_address')
+        .then(user => {
+            res.locals.currentUser = user;
+            next();
+        })
+        .catch(err => {
+            req.flash("error", "Error loading user account.");
+            res.redirect("/account");
+        })
+    },
+    getUser: (req, res, next) => {
+        User.findById(req.params.id).populate('profileImage').populate('shipping_address')
+        .then(user => {
+            res.locals.user = user;
+            next();
+        })
+        .catch(err => {
+            req.flash("error", "Error loading user account.");
+            res.redirect("/account");
+        });
+    },
+    indexView: (req, res) => {
+        res.render("account/index");
     },
     adminIndex: (req, res) => {
         res.render("admin/index");
@@ -69,25 +82,25 @@ module.exports = {
             }
         });
     },
-    edit: (req, res, next) => {
-        let currentUser = req.user;
-        if (currentUser) {
-            User.findById(currentUser)
-                .then(user => {
-                    res.locals.user = user;
-                    res.render("/account/edit")
-                    next();
-                })
-                .catch(error => {
-                    console.log(`Error fetching user by ID: ${error.message}`);
-                    next(error);
-                })
-        } else {
-            res.locals.redirect = "/";
+    toggleAdmin: (req, res, next) => {
+        let userId = req.params.id,
+            admin = req.params.admin == 0 ? true : false;
+
+        console.log(admin, req.params.admin);
+
+        User.findByIdAndUpdate(userId, {
+            $set: { admin: admin }
+        }).then(user => {
+            req.flash("success", `User Account Updated!`);
+            res.locals.redirect = "/admin";
             next();
-        }
+        }).catch(err => {
+            req.flash("error", `Error updating user: ${err.message}.`);
+            res.locals.redirect = "/admin";
+            next();
+        });
     },
-    updateGeneral: (req, res, next) => {
+    updateGeneral: async (req, res, next) => {
         let currentUser = req.user,
             userParams = {
                 name: {
@@ -97,48 +110,101 @@ module.exports = {
                 email: req.body.email || currentUser.email
             };
 
+        console.log(userParams);
+
         if (req.files && req.files.image) {
             let imgFile = req.files.image;
             let uploadPath = path.join(__dirname, "../public/img/account/") + currentUser._id + '_profile_image.jpg';
-            
-            Image.create({
-                title: currentUser.name.first + ' Profile Image',
-                alt: currentUser.name.first + '_profile_image',
-                url: '/img/account/' + currentUser._id + '_profile_image.jpg'
-            }).then(img => {
+
+            try {
+                if(currentUser.profileImage) {
+                    let res = await Image.findByIdAndDelete(currentUser.profileImage)
+                }
+                
+                let img = await Image.create({
+                    title: currentUser.name.first + ' Profile Image',
+                    alt: currentUser.name.first + '_profile_image',
+                    url: '/img/account/' + currentUser._id + '_profile_image.jpg'
+                })
+
                 userParams.profileImage = img._id;
                 imgFile.mv(uploadPath, (err) => {
-                    if (err) req.flash("error", `Error uploading image: ${error.message}`);
-                })
-            }).then(() => {
-                User.findByIdAndUpdate(currentUser, {
+                    if (err) req.flash("error", `Error uploading image: ${err.message}`);
+                });
+
+                let user = await User.findByIdAndUpdate(currentUser, {
                     $set: userParams
+                })
+
+                req.flash("success", `User Account Updated!`);
+                res.locals.redirect = "/account";
+                res.locals.currentUser = user;
+                next();
+            } catch (err) {
+                req.flash("error", `Error updating user: ${err.message}.`);
+                res.locals.redirect = "/account";
+                next();
+            }
+        } else {
+            try {
+                let user = await User.findByIdAndUpdate(currentUser, {
+                    $set: userParams
+                })
+                req.flash("success", `User Account Updated!`);
+                res.locals.redirect = "/account";
+                res.locals.currentUser = user;
+                next();
+            } catch (err) {
+                req.flash("error", `Error updating user: ${err.message}.`);
+                res.locals.redirect = "/account";
+                next();
+            }
+        }
+    },
+    updateAddress: (req, res, next) => {
+        let currentUser = req.user,
+            address = {
+                address_1: req.body.address1,
+                address_2: req.body.address2,
+                city: req.body.city,
+                state: req.body.state,
+                zipCode: req.body.zipcode,
+                country: req.body.country,
+            };
+        
+        if(currentUser.shipping_address) {
+            Address.findByIdAndUpdate(currentUser.shipping_address._id,
+                { $set: address }
+            ).then(address => {
+                User.findByIdAndUpdate(currentUser, {
+                    $set: { shipping_address: address }
                 }).then(user => {
                     req.flash("success", `User Account Updated!`);
                     res.locals.redirect = "/account";
                     res.locals.currentUser = user;
                     next();
-                }).catch(error => {
-                    req.flash("error", `Error updating user: ${error.message}.`);
-                    res.locals.redirect = "/account";
-                    next();
                 })
-            }).catch(err => {
-                req.flash("error", `Error creating image object: ${error.message}.`);
-            })
-        } else {
-            User.findByIdAndUpdate(currentUser, {
-                $set: userParams
-            }).then(user => {
-                req.flash("success", `User Account Updated!`);
-                res.locals.redirect = "/account";
-                res.locals.currentUser = user;
-                next();
             }).catch(error => {
                 req.flash("error", `Error updating user: ${error.message}.`);
                 res.locals.redirect = "/account";
                 next();
-            })
+            });
+        } else {
+            Address.create(address)
+            .then(address => {
+                User.findByIdAndUpdate(currentUser, {
+                    $set: { shipping_address: address }
+                }).then(user => {
+                    req.flash("success", `User Account Updated!`);
+                    res.locals.redirect = "/account";
+                    res.locals.currentUser = user;
+                    next();
+                })
+            }).catch(error => {
+                req.flash("error", `Error updating user: ${error.message}.`);
+                res.locals.redirect = "/account";
+                next();
+            });
         }
     },
     getAll: (req, res, next) => {
@@ -217,21 +283,18 @@ module.exports = {
         next();
     },
     delete: (req, res, next) => {
-        let currentUser = req.user;
-        if (currentUser) {
-            User.findByIdAndRemove(currentUser)
-                .then(() => {
-                    res.locals.redirect = "/";
-                    next();
-                })
-                .catch(error => {
-                    console.log(`Error deleting user by ID: ${error.message}`);
-                    next();
-                });
-        } else {
-            res.locals.redirect = "/accoun/login";
+        let userId = req.params.id;
+        User.findByIdAndRemove(userId)
+        .then(() => {
+            req.flash("success", "User Account Removed!")
+            res.locals.redirect = "/admin";
             next();
-        }
+        })
+        .catch(error => {
+            req.flash("error", "Error removing user account.");
+            res.locals.redirect = "/admin";
+            next();
+        });
     },
     // getBreadcrumbs: (req, res, next) => {
     //     console.log('paths', req.originalUrl, req.baseUrl, req.path);

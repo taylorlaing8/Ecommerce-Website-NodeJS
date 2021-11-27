@@ -9,41 +9,41 @@ module.exports = {
     let catSlug = req.params.slug;
 
     Category.findOne({ slug: catSlug })
-    .then(category => {
-      if (category) {
-        res.locals.category = category;
-        return category;
-      } else {
-        res.render("error/pageNoteFound");
-      }
-    })
-    .then(category => {
-      Product.find({ category: category._id }).populate('images')
-      .then( products => {
-        res.locals.products = products;
-        next();
-      }).catch(error => {
-        console.log(`Error fetching Products within Category: ${error.message}`)
+      .then(category => {
+        if (category) {
+          res.locals.category = category;
+          return category;
+        } else {
+          res.render("error/pageNoteFound");
+        }
+      })
+      .then(category => {
+        Product.find({ category: category._id }).populate('images')
+          .then(products => {
+            res.locals.products = products;
+            next();
+          }).catch(error => {
+            console.log(`Error fetching Products within Category: ${error.message}`)
+            next(error);
+          });
+      })
+      .catch(error => {
+        console.log(`Error fetching category by Slug: ${error.message}`);
         next(error);
       });
-    })
-    .catch(error => {
-      console.log(`Error fetching category by Slug: ${error.message}`);
-      next(error);
-    });
   },
   indexView: (req, res) => {
     res.render("shop/category");
   },
   getAll: (req, res, next) => {
     Category.find({})
-    .then(categories => {
-      res.locals.categories = categories;
-      next();
-    }).catch(err => {
-      console.log(`Error retrieving categories: ${err.message}`);
-      next(err);
-    })
+      .then(categories => {
+        res.locals.categories = categories;
+        next();
+      }).catch(err => {
+        console.log(`Error retrieving categories: ${err.message}`);
+        next(err);
+      })
   },
   create: (req, res, next) => {
     let catParams = {
@@ -60,9 +60,9 @@ module.exports = {
         next();
       })
       .catch(error => {
-          req.flash("error", `Error creating category.`);
-          res.locals.redirect = `/admin/category/${category.slug}`;
-          next();
+        req.flash("error", `Error creating category.`);
+        res.locals.redirect = `/admin/category/${category.slug}`;
+        next();
       })
   },
   update: (req, res, next) => {
@@ -73,32 +73,40 @@ module.exports = {
     };
 
     Category.findByIdAndUpdate(req.body.id, {
-        $set: catParams
+      $set: catParams
     }).then(category => {
-        req.flash("success", `Category Updated Successfully!`);
-        res.locals.redirect = `/admin/category/${category.slug}`;
-        res.locals.category = category;
-        next();
+      req.flash("success", `Category Updated Successfully!`);
+      res.locals.redirect = `/admin/category/${category.slug}`;
+      res.locals.category = category;
+      next();
     })
-    .catch(error => {
+      .catch(error => {
         req.flash("error", `Error saving category.`);
         res.locals.redirect = `/admin/category/${category.slug}`;
         next();
-    })
+      })
   },
   remove: (req, res, next) => {
     let catSlug = req.params.slug;
-    Category.findOneAndDelete({
-        slug: catSlug
-    }).then(resizeTo => {
-        req.flash("success", `Category Successfully Removed!`);
-        res.locals.redirect = `/admin`;
-        next();
-    })
-    .catch(error => {
-        req.flash("error", `Error removing category.`);
-        res.locals.redirect = `/admin/category/${category.slug}`;
-        next();
+
+    Category.findOne({
+      slug: catSlug
+    }).then(c => {
+      Product.updateMany(
+        { category: { $in: c._id } },
+        { $set: { category: null } }
+      ).then(() => {
+        Category.findByIdAndDelete(c._id)
+          .then(() => {
+            req.flash("success", `Category Removed Successfully!`);
+            res.locals.redirect = `/admin`;
+            next();
+          })
+      })
+    }).catch(err => {
+      req.flash("error", `Error removing category.`);
+      res.locals.redirect = `/admin/category/${catSlug}`;
+      next();
     })
   },
   adminIndexView: (req, res) => {

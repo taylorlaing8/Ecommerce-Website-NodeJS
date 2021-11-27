@@ -13,10 +13,16 @@
 </div>
 <div class="form-group col-6 py-2">
     <label class="form-label">Category</label>
-    <select class="form-control mt-1" id="category" name="category">
-        <% categories.forEach(category => { 
-            let selected = ""
-            if (product && (product.category.title == category.title)) selected = "selected" %>
+    <select class="form-control mt-1" id="category" name="category" required>
+        <% 
+        if(product && product.category && product.category.length > 0) { %>
+            <option disabled value> -- select a category -- </option>
+        <% } else { %>
+            <option disabled selected value> -- select an option -- </option>
+        <% } 
+        categories.forEach(category => { 
+            let selected = "";
+            if (product && product.category && (product.category.title == category.title)) selected = "selected" %>
             <option value="<%= category._id %>" <%= selected %> ><%= category.title %></option>
         <% }) %>
     </select>
@@ -43,7 +49,7 @@
                     });
                 }
                 if(variation.type.slug == varType.slug) { %>
-                    <input type="radio" class="btn-check" name="variations[<%= index %>]" id="<%=`btncheck${variation._id}`%>" value="<%= variation._id %>" <%= checked %> autocomplete="off">
+                    <input type="checkbox" class="btn-check" name="variations[<%= index %>]" id="<%=`btncheck${variation._id}`%>" value="<%= variation._id %>" <%= checked %> autocomplete="off">
                     <label class="btn btn-outline-primary" for="<%=`btncheck${variation._id}`%>"><%= variation.name %></label>
                 <% } checked = [];
             }); %>

@@ -15,20 +15,19 @@ module.exports = {
         })
     },
     subscribe: (req, res, next) => {
-        let subsParams = {
-            email: req.body.email,
-            subscribed: true,
-            subscribeDate: new Date()
-        }
+        let email = req.body.email;
 
-        Subscriber.create(subsParams)
+        Subscriber.create({email})
         .then(subscriber => {
             req.flash("subscriberSuccess", `Subscribed!`);
             res.locals.redirect = "/"
             next();
         }).catch(error => {
-            console.log(`Error subscribing: ${error.message}`)
-            req.flash("subscriberError", `Error subscribing...`);
+            if(error.code == 11000) {
+                req.flash("subscriberError", `Already Subscribed...`);
+            } else {
+                req.flash("subscriberError", `Error subscribing...`);
+            }
             res.locals.redirect = "/"
             next();
         })

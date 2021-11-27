@@ -1,16 +1,41 @@
-<div class="tab-pane fade" id="account-change-password">
-    <div class="card-body pb-2">
-        <div class="form-group">
-            <label class="form-label">Current password</label>
-            <input type="password" class="form-control">
-        </div>
-        <div class="form-group">
-            <label class="form-label">New password</label>
-            <input type="password" class="form-control">
-        </div>
-        <div class="form-group">
-            <label class="form-label">Repeat new password</label>
-            <input type="password" class="form-control">
+<div class="tab-pane fade" id="account-addresses" role="tabpanel" aria-labelledby="account-addresses-tab">
+    
+    <div class="row">
+        <div class="col col-10 py-2">
+            <h4>Shipping Address</h4>
+            <form action="/account/update/shipping" method="POST" role="form" class="row">
+                <div class="form-group col-12 py-2">
+                    <label class="form-label">Address 1</label>
+                    <input type="text" class="form-control mt-1" id="address1" name="address1" placeholder="Street Address" value="<%= currentUser.shipping_address ? currentUser.shipping_address.address_1 : "" %>" required>
+                </div>
+                <div class="form-group col-12 py-2">
+                    <label class="form-label">Address 2</label>
+                    <input type="text" class="form-control mt-1" id="address2" name="address2" placeholder="Apt, Unit, etc." value="<%= currentUser.shipping_address ? currentUser.shipping_address.address_2 : "" %>">
+                </div>
+                <div class="form-group col-6 py-2">
+                    <label class="form-label">City</label>
+                    <input type="text" class="form-control mt-1" id="city" name="city" placeholder="City" value="<%= currentUser.shipping_address ? currentUser.shipping_address.city : "" %>" required>
+                </div>
+                <div class="form-group col-6 py-2">
+                    <label class="form-label">State</label>
+                    <input type="text" class="form-control mt-1" id="state" name="state" placeholder="State" value="<%= currentUser.shipping_address ? currentUser.shipping_address.state : "" %>" required>
+                </div>
+                <div class="form-group col-6 py-2">
+                    <label class="form-label">Zipcode</label>
+                    <input type="text" class="form-control mt-1" id="zipcode" name="zipcode" placeholder="Zipcode" value="<%= currentUser.shipping_address ? currentUser.shipping_address.zipCode : "" %>" required>
+                </div>
+                <div class="form-group col-6 py-2">
+                    <label class="form-label">Country</label>
+                    <input type="text" class="form-control mt-1" id="country" name="country" placeholder="Country (US)" value="<%= currentUser.shipping_address ? currentUser.shipping_address.country : "" %>" required>
+                </div>
+                <!-- <div class="form-group col-12 py-2">
+                    <label for="shipping-equal-billing" class="form-label">Billing Address Same As Shipping?</label>
+                    <input type="checkbox" id="shipping-equal-billing" name="shipEqualBill" value="1" required>
+                </div> -->
+                <div class="form-group col-8 py-2">
+                    <button type="submit" class="btn btn-success btn-lg px-3">Update</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

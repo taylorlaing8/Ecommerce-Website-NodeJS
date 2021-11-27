@@ -22,6 +22,9 @@ const mongoose = require("mongoose"),
             required: true,
             trim: true
         }
+    },
+    {
+        timestamps: true
     });
 
 module.exports = mongoose.model("Contact", contactSchema, 'cContact');

@@ -15,6 +15,7 @@ const mongoose = require("mongoose"),
         slug: {
             type: String,
             required: true,
+            unique: true,
             trim: true
         },
     });

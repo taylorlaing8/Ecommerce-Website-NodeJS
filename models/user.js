@@ -27,10 +27,6 @@ const mongoose = require("mongoose"),
                 type: Schema.Types.ObjectId,
                 ref: "Address"
             },
-            billing_address: {
-                type: Schema.Types.ObjectId,
-                ref: "Address"
-            },
             admin: {
                 type: Boolean,
                 default: false

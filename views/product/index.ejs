@@ -4,7 +4,11 @@
         <div class="row">
             <div class="col-lg-5 mt-5">
                 <div class="card mb-3">
-                    <img class="card-img img-fluid" src="<%= product.images[0].url %>" alt="<%= product.images[0].alt %>" id="product-detail">
+                    <% if(product.images.length > 0) { %>
+                        <img class="card-img rounded-0 img-fluid" src="<%= product.images[0].url %>" alt="<%= product.images[0].alt %>">
+                    <% } else { %>
+                        <img class="card-img rounded-0 img-fluid" src="/img/product/missing_image.jpg" alt="Product image not available">
+                    <% } %>
                 </div>
                 <div class="row">
                     <!--Start Controls-->
@@ -72,8 +76,8 @@
             <div class="col-lg-7 mt-5">
                 <div class="card">
                     <div class="card-body">
-                        <h1 class="h2"><%= product.title %></h1>
-                        <p class="h3 py-2"><%= product.price %></p>
+                        <h1 class="h2"><%= product.title ? product.title : null %></h1>
+                        <p class="h3 py-2">$<%= product.price ? product.price : null %></p>
                         <!-- <p class="py-2">
                             <i class="fa fa-star text-warning"></i>
                             <i class="fa fa-star text-warning"></i>
@@ -87,33 +91,19 @@
                                 <h6>Category:</h6>
                             </li>
                             <li class="list-inline-item">
-                                <p class="text-muted"><strong><%= product.category.title %></strong></p>
+                                <p class="text-muted"><strong><%= product.category ? product.category.title : null %></strong></p>
                             </li>
                         </ul>
 
                         <h6>Description:</h6>
-                        <p><%= product.description %></p>
-                        <!-- NEED TO BUILD THIS STILL -->
-                        <!-- <h6>Specification:</h6>
-                        <ul class="list-unstyled pb-3">
-                            <li>Lorem ipsum dolor sit</li>
-                            <li>Amet, consectetur</li>
-                            <li>Adipiscing elit,set</li>
-                            <li>Duis aute irure</li>
-                            <li>Ut enim ad minim</li>
-                            <li>Dolore magna aliqua</li>
-                            <li>Excepteur sint</li>
-                        </ul> -->
-
+                        <p><%= product.description ? product.description : null %></p>
                         <form action="" method="GET">
                             <input type="hidden" name="product-title" value="Activewear">
                             <div class="row">
-                                <!-- NEED PARENT CHILD RELATIONSHIP TO DO THIS -->
                                 <!-- <div class="col-auto">
                                     <ul class="list-inline pb-3">
-                                        <li class="list-inline-item">Size :
-                                            <input type="hidden" name="product-size" id="product-size" value="S">
-                                        </li>
+                                        <label class="form-label">Variations</label><br>
+                                        <li class="list-inline-item">Size :</li>
                                         <li class="list-inline-item"><span class="btn btn-success btn-size">S</span></li>
                                         <li class="list-inline-item"><span class="btn btn-success btn-size">M</span></li>
                                         <li class="list-inline-item"><span class="btn btn-success btn-size">L</span></li>

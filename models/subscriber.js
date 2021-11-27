@@ -11,14 +11,12 @@ const mongoose = require("mongoose"),
         },
         subscribed: {
             type: Boolean,
+            default: true,
             required: true,
-        },
-        subscribeDate: {
-            type: Date
-        },
-        unsubscribeDate: {
-            type: Date
         }
+    },
+    {
+        timestamps: true
     });
 
 module.exports = mongoose.model("Subscriber", subscriberSchema, 'cSubscribers');
