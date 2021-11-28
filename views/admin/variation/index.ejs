@@ -9,9 +9,9 @@
         <div class="row no-gutters row-bordered row-border-light px-3 py-4">
             <div class="col-md-2 pt-0">
                 <div class="nav flex-column nav-pills me-3" id="v-pills-tab">
-                    <button class="nav-link active" id="variation-details-tab" data-bs-toggle="pill" data-bs-target="#variation-details" type="button">Details</button>
+                    <button class="nav-link active" data-tab="details" id="details-tab" data-bs-toggle="pill" data-bs-target="#variation-details" type="button">Details</button>
                     <% if(variation) { %>
-                        <button class="nav-link" id="variation-delete-tab" data-bs-toggle="pill" data-bs-target="#variation-delete" type="button">Delete</button>
+                        <button class="nav-link" data-tab="delete" id="delete-tab" data-bs-toggle="pill" data-bs-target="#variation-delete" type="button">Delete</button>
                     <% } %>
                 </div>
             </div>

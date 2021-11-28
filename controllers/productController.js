@@ -73,7 +73,7 @@ module.exports = {
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
-            variations: req.body.variations,
+            variations: req.body.variations.flat(1),
             category: req.body.category,
         };
 
@@ -87,44 +87,41 @@ module.exports = {
         })
         .catch(error => {
             req.flash("error", `Error saving product.`);
-            res.locals.redirect = `/admin/product/${product.slug}`;
+            res.locals.redirect = `/admin/product/${prodParams.slug}`;
             next();
         })
     },
     addImage: (req, res, next) => {
         let product = res.locals.product;
-
-        if (req.files && req.files.image) {
-            let imgFile = req.files.image;
-            let uploadPath = path.join(__dirname, "../public/img/product/") + product._id + '_product_image.jpg';
-            
-            Image.create({
-                title: product.title + ' Product Image',
-                alt: product.slug + '-product-image',
-                url: '/img/product/' + product._id + '_product_image.jpg'
-            }).then(img => {
-                imgFile.mv(uploadPath, (err) => {
-                    if (err) req.flash("error", `Error uploading image: ${error.message}`);
-                })
-                return img._id;
-            }).then((imgId) => {
-                Product.findByIdAndUpdate(product._id, {
-                    $addToSet: { images: imgId }
-                }).then(product => {
-                    res.locals.product = product;
-                    res.locals.redirect = `/admin/product/${product.slug}`;
-                    next();
-                }).catch(error => {
-                    req.flash("error", "Error adding image to product")
-                    res.locals.redirect = `/admin/product/${product.slug}`;
-                    next();
-                });
-            }).catch(error => {
-                req.flash("error", "Error creating image")
-                res.locals.redirect = `/admin/product/${product.slug}`;
-                next();
+        let imgFile = req.files.image;
+        let uploadPath = path.join(__dirname, "../public/img/product/") + product._id + '_product_image.jpg';
+        
+        Image.create({
+            title: product.title + ' Product Image',
+            alt: product.slug + '-product-image',
+            url: '/img/product/' + product._id + '_product_image.jpg'
+        }).then(img => {
+            imgFile.mv(uploadPath, (err) => {
+                if (err) req.flash("error", `Error uploading image: ${error.message}`);
             })
-        }
+            return img._id;
+        }).then((imgId) => {
+            Product.findByIdAndUpdate(product._id, {
+                $addToSet: { images: imgId }
+            }).then(product => {
+                res.locals.product = product;
+                res.locals.redirect = `/admin/product/${product.slug}#images`;
+                next();
+            }).catch(error => {
+                req.flash("error", "Error adding image to product")
+                res.locals.redirect = `/admin/product/${product.slug}#images`;
+                next();
+            });
+        }).catch(error => {
+            req.flash("error", "Error creating image")
+            res.locals.redirect = `/admin/product/${product.slug}#images`;
+            next();
+        })
     },
     remove: (req, res, next) => {
         let prodSlug = req.params.slug;

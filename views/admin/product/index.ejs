@@ -9,10 +9,10 @@
         <div class="row no-gutters row-bordered row-border-light px-3 py-4">
             <div class="col-md-2 pt-0">
                 <div class="nav flex-column nav-pills me-3" id="v-pills-tab">
-                    <button class="nav-link active" id="product-details-tab" data-bs-toggle="pill" data-bs-target="#product-details" type="button">Details</button>
+                    <button class="nav-link active" data-tab="details" id="details-tab" data-bs-toggle="pill" data-bs-target="#product-details" type="button">Details</button>
                     <% if(product) { %>
-                        <button class="nav-link" id="product-images-tab" data-bs-toggle="pill" data-bs-target="#product-images" type="button">Images</button>
-                        <button class="nav-link" id="product-delete-tab" data-bs-toggle="pill" data-bs-target="#product-delete" type="button">Delete</button>
+                        <button class="nav-link" data-tab="images" id="images-tab" data-bs-toggle="pill" data-bs-target="#product-images" type="button">Images</button>
+                        <button class="nav-link" data-tab="delete" id="delete-tab" data-bs-toggle="pill" data-bs-target="#product-delete" type="button">Delete</button>
                     <% } %>
                 </div>
             </div>
