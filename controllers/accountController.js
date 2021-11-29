@@ -92,11 +92,11 @@ module.exports = {
             $set: { admin: admin }
         }).then(user => {
             req.flash("success", `User Account Updated!`);
-            res.locals.redirect = "/admin";
+            res.locals.redirect = "/admin#users";
             next();
         }).catch(err => {
             req.flash("error", `Error updating user: ${err.message}.`);
-            res.locals.redirect = "/admin";
+            res.locals.redirect = "/admin#users";
             next();
         });
     },
@@ -287,12 +287,12 @@ module.exports = {
         User.findByIdAndRemove(userId)
         .then(() => {
             req.flash("success", "User Account Removed!")
-            res.locals.redirect = "/admin";
+            res.locals.redirect = "/admin#users";
             next();
         })
         .catch(error => {
             req.flash("error", "Error removing user account.");
-            res.locals.redirect = "/admin";
+            res.locals.redirect = "/admin#users";
             next();
         });
     },

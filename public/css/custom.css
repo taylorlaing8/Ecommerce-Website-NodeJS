@@ -62,12 +62,6 @@ Custom Css
     object-fit: cover;
 }
 
-.ui-w-125-175 {
-    width: 125px;
-    height: 175px;
-    object-fit: cover;
-}
-
 .btn-default {
     border-color: rgba(24, 28, 33, 0.1);
     background: rgba(0, 0, 0, 0);
@@ -167,4 +161,28 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
 .light-style .account-settings-links .list-group-item {
     padding: 0.85rem 1.5rem;
     border-color: rgba(24, 28, 33, 0.03) !important;
+}
+
+/***** ADMIN *****/
+.breadcrumb-item a{
+    color: var(--vs-dark);
+    font-weight: 500 !important;
+    text-decoration: none;
+}
+.product-image {
+    width: 125px;
+    height: 175px;
+    object-fit: cover;
+}
+
+.image-remove {
+    position: absolute;
+    top: -0.35rem;
+    right: 0.35rem;
+    border-radius: 99px;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

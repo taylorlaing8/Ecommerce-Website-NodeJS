@@ -93,22 +93,25 @@ module.exports = {
     },
     addImage: (req, res, next) => {
         let product = res.locals.product;
+        let imgIndex = product.images.length + 1;
         let imgFile = req.files.image;
-        let uploadPath = path.join(__dirname, "../public/img/product/") + product._id + '_product_image.jpg';
+        let uploadPath = `${path.join(__dirname, "../public/img/product/")}${product._id}-product-image${imgIndex}.jpg`;
         
         Image.create({
             title: product.title + ' Product Image',
             alt: product.slug + '-product-image',
-            url: '/img/product/' + product._id + '_product_image.jpg'
+            url: `/img/product/${product._id}-product-image${imgIndex}.jpg`
         }).then(img => {
             imgFile.mv(uploadPath, (err) => {
                 if (err) req.flash("error", `Error uploading image: ${error.message}`);
             })
+            console.log(img);
             return img._id;
         }).then((imgId) => {
             Product.findByIdAndUpdate(product._id, {
                 $addToSet: { images: imgId }
             }).then(product => {
+                console.log(product);
                 res.locals.product = product;
                 res.locals.redirect = `/admin/product/${product.slug}#images`;
                 next();
@@ -118,7 +121,26 @@ module.exports = {
                 next();
             });
         }).catch(error => {
+            console.log(error);
             req.flash("error", "Error creating image")
+            res.locals.redirect = `/admin/product/${product.slug}#images`;
+            next();
+        })
+    },
+    removeImage: (req, res, next) => {
+        let prodSlug = req.params.slug,
+            imageId = req.params.imgId;
+        
+        Product.findOneAndUpdate(
+            { slug: prodSlug },
+            { $pull: { images: imageId } }
+        ).then(product => {
+            req.flash("success", `Product Image Removed Successfully!`);
+            res.locals.redirect = `/admin/product/${product.slug}#images`;
+            next();
+        })
+        .catch(error => {
+            req.flash("error", `Error removing product image.`);
             res.locals.redirect = `/admin/product/${product.slug}#images`;
             next();
         })
@@ -127,7 +149,7 @@ module.exports = {
         let prodSlug = req.params.slug;
         Product.findOneAndDelete({
             slug: prodSlug
-        }).then(resizeTo => {
+        }).then(res => {
             req.flash("success", `Product Successfully Removed!`);
             res.locals.redirect = `/admin`;
             next();
