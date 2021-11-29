@@ -293,19 +293,6 @@ module.exports = {
             next();
         });
     },
-    // getBreadcrumbs: (req, res, next) => {
-    //     console.log('paths', req.originalUrl, req.baseUrl, req.path);
-    //     let path = req.originalUrl;
-    //     let pathItems = {};
-    //     path.slice(1, path.length).split("/").forEach(item => {
-    //         let itemIndex = path.indexOf(item);
-    //         let itemLength = item.length;
-    //         let breadcrumb = path.slice(0, (itemIndex + itemLength));
-    //         pathItems[item] = `<a href="${breadcrumb}">${item.toUpperCase()}</a>`;
-    //     })
-
-    //     console.log(pathItems);
-    // },
     redirectView: (req, res, next) => {
         let redirectPath = res.locals.redirect;
         if (redirectPath !== undefined) res.redirect(redirectPath);

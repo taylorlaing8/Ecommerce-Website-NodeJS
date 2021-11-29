@@ -52,8 +52,6 @@ module.exports = {
             category: req.body.category,
         };
 
-        console.log(prodParams);
-
         Product.create(
             prodParams
         ).then(product => {
@@ -143,22 +141,23 @@ module.exports = {
         })
         .catch(error => {
             req.flash("error", `Error removing product image.`);
-            res.locals.redirect = `/admin/product/${product.slug}#images`;
+            res.locals.redirect = `/admin/product/${prodSlug}#images`;
             next();
         })
     },
     remove: (req, res, next) => {
         let prodSlug = req.params.slug;
+
         Product.findOneAndDelete({
             slug: prodSlug
-        }).then(res => {
+        }).then(response => {
             req.flash("success", `Product Successfully Removed!`);
-            res.locals.redirect = `/admin`;
+            res.locals.redirect = "/admin#products";
             next();
         })
         .catch(error => {
             req.flash("error", `Error removing product.`);
-            res.locals.redirect = `/admin/product/${product.slug}`;
+            res.locals.redirect = `/admin/product/${prodSlug}`;
             next();
         })
     },
