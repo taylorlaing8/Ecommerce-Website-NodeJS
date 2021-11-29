@@ -83,4 +83,11 @@ router.get(
     accountController.redirectView
 )
 
+// Image Controller
+router.get(
+    "/image/:id",
+    imageController.getOne,
+    imageController.adminIndex
+)
+
 module.exports = router;

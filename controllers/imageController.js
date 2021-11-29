@@ -1,9 +1,25 @@
 "use strict";
 
 const Image = require("../models/image"),
-  httpStatus = require("http-status-codes");
+    User = require("../models/user"),
+    Product = require("../models/product"),
+    httpStatus = require("http-status-codes"),
+    path = require("path"),
+    fs = require('fs');
 
 module.exports = {
+    getOne: (req, res, next) => {
+        let imgId = req.params.id;
+
+        Image.findById(imgId)
+        .then(image => {
+            res.locals.image = image;
+            next();
+        }).catch(error => {
+            req.flash("error", "Error fetching image.");
+            next();
+        });
+    },
     getAll: (req, res, next) => {
         Image.find({})
         .then(images => {
@@ -35,11 +51,60 @@ module.exports = {
             })
         })
     },
-    update: (req, res, next) => {
-
+    adminIndex: (req, res) => {
+        res.render("admin/image/index");
     },
-    remove: (req, res, next) => {
+    update: (req, res, next) => {
+        let imgId = req.body.id,
+            imgParams = {
+                title: req.body.title,
+                alt: req.body.alt
+            };
 
+        Image.findByIdAndUpdate(imgId,
+            {$set: imgParams}
+        ).then(image => {
+            res.locals.image = image;
+            req.flash("success", "Image Updated Successfully!");
+            res.locals.redirect = `/admin/image/${image._id}`;
+            next();
+        }).catch(error => {
+            req.flash("error", "Error updating image");
+            res.locals.redirect = `/admin/image/${imgId}`;
+            next();
+        })
+    },
+    remove: async (req, res, next) => {
+        let imgId = req.params.id;
+        
+        try {
+            let image = await Image.findById(imgId);
+            let imageUrl = image.url;
+            
+            await Product.updateMany(
+                { images: { $in: imgId }},
+                { $pull: { images: imgId }}
+            );
+
+            await User.updateMany(
+                { profileImage: imgId },
+                { $unset: { profileImage: "" }}
+            );
+
+            let imgPath = `${path.join(__dirname, "../public/")}${imageUrl}`;
+            await fs.unlinkSync(imgPath);
+
+            await Image.findByIdAndDelete(imgId);
+
+            req.flash("success", `Image Removed Successfully!`);
+            res.locals.redirect = `/admin#images`;
+            next();
+
+        } catch (error) {
+            req.flash("error", "Error removing image.");
+            res.locals.redirect = `/admin/image/${imgId}`;
+            next();
+        }
     },
     redirectView: (req, res, next) => {
         let redirectPath = res.locals.redirect;

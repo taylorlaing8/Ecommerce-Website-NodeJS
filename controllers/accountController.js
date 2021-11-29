@@ -86,8 +86,6 @@ module.exports = {
         let userId = req.params.id,
             admin = req.params.admin == 0 ? true : false;
 
-        console.log(admin, req.params.admin);
-
         User.findByIdAndUpdate(userId, {
             $set: { admin: admin }
         }).then(user => {
@@ -109,8 +107,6 @@ module.exports = {
                 },
                 email: req.body.email || currentUser.email
             };
-
-        console.log(userParams);
 
         if (req.files && req.files.image) {
             let imgFile = req.files.image;
@@ -213,6 +209,7 @@ module.exports = {
             res.locals.users = users;
             next();
         }).catch(err => {
+            req.flash("error", "Error retrieving users.");
             console.log(`Error retrieving users: ${err.message}`);
             next(err);
         });

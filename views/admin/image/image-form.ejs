@@ -1,0 +1,12 @@
+<input type="hidden" name="id" value="<%= image._id %>">
+<div class="form-group col-12 py-2">
+    <label class="form-label">Title</label>
+    <input type="text" class="form-control mt-1" id="title" name="title" placeholder="Image Title" value="<%= image.title %>" required>
+</div>
+<div class="form-group col-12 py-2">
+    <label class="form-label">Alt</label>
+    <input type="text" class="form-control mt-1" id="alt" name="alt" placeholder="image-alt" value="<%= image.alt %>" required>
+</div>
+<div class="form-group col-8 py-4">
+    <button type="submit" class="btn btn-success btn-lg px-3">Update</button>
+</div>

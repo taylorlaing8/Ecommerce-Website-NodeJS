@@ -1,0 +1,13 @@
+<div class="tab-pane fade active show" id="image-details">
+    <h2 style="text-align: center;">Update Image</h2>
+    <div class="row align-items-center pt-3">
+        <div class="col-4">
+            <img class="img-thumbnail w-100" src="<%= image.url %>" alt="<%= image.alt %>">
+        </div>
+        <div class="col-8">
+            <form action="/image/update" method="POST" role="form" class="row">
+                <%- include('image-form') %>
+            </form>
+        </div>
+    </div>
+</div>
