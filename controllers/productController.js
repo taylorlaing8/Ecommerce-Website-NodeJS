@@ -48,9 +48,11 @@ module.exports = {
             title: req.body.title,
             description: req.body.description,
             price: req.body.price,
-            variations: req.body.variations,
+            variations: req.body.variations.flat(1),
             category: req.body.category,
         };
+
+        console.log(prodParams);
 
         Product.create(
             prodParams
@@ -61,6 +63,7 @@ module.exports = {
             next();
         })
         .catch(error => {
+            console.log(error);
             req.flash("error", `Error creating product.`);
             res.locals.redirect = `/admin/product/create`;
             next();
@@ -91,41 +94,40 @@ module.exports = {
             next();
         })
     },
-    addImage: (req, res, next) => {
-        let product = res.locals.product;
-        let imgIndex = product.images.length + 1;
-        let imgFile = req.files.image;
-        let uploadPath = `${path.join(__dirname, "../public/img/product/")}${product._id}-product-image${imgIndex}.jpg`;
-        
-        Image.create({
-            title: product.title + ' Product Image',
-            alt: product.slug + '-product-image',
-            url: `/img/product/${product._id}-product-image${imgIndex}.jpg`
-        }).then(img => {
-            imgFile.mv(uploadPath, (err) => {
-                if (err) req.flash("error", `Error uploading image: ${error.message}`);
+    addImage: async (req, res, next) => {     
+        try {
+            let product = res.locals.product
+            let imgIndex = product.images.length + 1;
+
+            req.files.images.forEach(async (imgFile, index) => {
+                imgIndex += index;
+
+                let uploadPath = `${path.join(__dirname, "../public/img/product/")}${product._id}-product-image${imgIndex}.jpg`;
+            
+                let img = await Image.create({
+                    title: product.title + ' Product Image',
+                    alt: product.slug + '-product-image',
+                    url: `/img/product/${product._id}-product-image${imgIndex}.jpg`
+                })
+
+                await imgFile.mv(uploadPath, (err) => {
+                    if (err) console.log(`Error uploading image: ${error.message}`);
+                })
+
+                product = await Product.findByIdAndUpdate(product._id, {
+                    $addToSet: { images: img._id }
+                })                
             })
-            console.log(img);
-            return img._id;
-        }).then((imgId) => {
-            Product.findByIdAndUpdate(product._id, {
-                $addToSet: { images: imgId }
-            }).then(product => {
-                console.log(product);
-                res.locals.product = product;
-                res.locals.redirect = `/admin/product/${product.slug}#images`;
-                next();
-            }).catch(error => {
-                req.flash("error", "Error adding image to product")
-                res.locals.redirect = `/admin/product/${product.slug}#images`;
-                next();
-            });
-        }).catch(error => {
-            console.log(error);
-            req.flash("error", "Error creating image")
+
+            res.locals.product = product;
             res.locals.redirect = `/admin/product/${product.slug}#images`;
             next();
-        })
+            
+        } catch (error) {
+            req.flash("error", "Error uploading image")
+            res.locals.redirect = `/admin/product/${product.slug}#images`;
+            next();
+        }
     },
     removeImage: (req, res, next) => {
         let prodSlug = req.params.slug,
