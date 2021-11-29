@@ -15,12 +15,18 @@ const express = require("express"),
   User = require("./models/user"),
   fileUpload = require('express-fileupload');
 
+require("dotenv").config();
+
 // Set application variables
 app.set('port', process.env.PORT || 3000);
 app.set('view engine', 'ejs');
 
 // Mongoose database setup
-mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://admin:DevPass$8@is5050-cluster.eqzfs.mongodb.net/covert_tees?retryWrites=true&w=majority');
+if (process.env.NODE_ENV === "development")
+  mongoose.connect(process.env.MONGO_DEV_URI);  // Atlas connection string for DEVELOPMENT db
+else if (process.env.NODE_ENV === "production")
+  mongoose.connect(process.env.MONGO_PROD_URI); // Atlas connection string for PRODUCTION db
+
 const db = mongoose.connection;
 
 db.once("open", () => {
