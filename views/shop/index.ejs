@@ -11,7 +11,7 @@
         <div class="row no-gutters row-bordered row-border-light px-3 py-4">
             <div class="col-md-2 pt-0">
                 <div class="nav flex-column nav-pills me-3" id="v-pills-tab">
-                    <button hidden class="nav-link active" data-tab="dashboard" id="dashboard-tab" data-bs-toggle="pill" data-bs-target="#admin-dashboard" type="button">Dashboard</button>
+                    <button hidden class="nav-link active" data-tab="dashboard" id="dashboard-tab" data-bs-toggle="pill" data-bs-target="#shop-dashboard" type="button">Dashboard</button>
                     <% categories.forEach(category => { %>
                         <button class="nav-link" data-tab="<%= category.slug %>" id="<%= `${category.slug}-tab` %>" data-bs-toggle="pill" data-bs-target="<%= `#shop-${category.slug}` %>" type="button"><%= category.title %></button>
                     <% }) %>
@@ -20,6 +20,7 @@
             <div class="col-md-10">
                 <div class="tab-content h-100" id="v-pills-tabContent">
                     
+                    <%- include('dashboard') %>
                     <% categories.forEach(category => { %>
                         <%- include('category', {category: category}) %>
                     <% }) %>

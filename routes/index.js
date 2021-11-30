@@ -13,7 +13,10 @@ const router = require("express").Router(),
     orderRoutes = require("./orderRoutes"),
     accountRoutes = require("./accountRoutes"),
     adminRoutes = require("./adminRoutes"),
-    errorRoutes = require("./errorRoutes");
+    errorRoutes = require("./errorRoutes"),
+    categoryController = require("../controllers/categoryController");;
+
+router.use(categoryController.getAll);
     
 router.use("/contact", contactRoutes);
 router.use("/subscriber", subscriberRoutes);
