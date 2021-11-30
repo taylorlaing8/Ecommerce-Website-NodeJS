@@ -8,7 +8,7 @@ const mongoose = require("mongoose"),
             ref: "User",
             required: true
         },
-        products: {
+        product: {
             type: Array,
             required: true
         }

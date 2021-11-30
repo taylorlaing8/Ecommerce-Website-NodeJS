@@ -1,0 +1,13 @@
+<div class="tab-pane fade active show" id="shop-dashboard">
+    <div class="row pb-3">
+        <div class="col-12 table-responsive">
+            <div class="row pb-3">
+                <% categories.forEach(category => { %> 
+                    <div class="col-4 py-2">
+                        <a class="btn btn-success w-100" href="<%=`#${category.slug}`%>"><%= category.title %></a>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+</div>
