@@ -25,12 +25,14 @@ module.exports = {
         }
     },
     addToCart: (req, res, next) => {
-        let cart = req.cart;
         let item = {
             _id: req.body._id,
             title: req.body.title,
+            variations: req.body.variations.flat(1),
+            quantity: req.body.quantity,
             price: req.body.price
         };
+        let cart = req.cart;
         cart.addItem(item);
         next();
     },
