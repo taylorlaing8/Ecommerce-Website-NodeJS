@@ -100,17 +100,26 @@
                         <form action="" method="GET">
                             <input type="hidden" name="product-title" value="Activewear">
                             <div class="row">
-                                <!-- <div class="col-auto">
-                                    <ul class="list-inline pb-3">
-                                        <label class="form-label">Variations</label><br>
-                                        <li class="list-inline-item">Size :</li>
-                                        <li class="list-inline-item"><span class="btn btn-success btn-size">S</span></li>
-                                        <li class="list-inline-item"><span class="btn btn-success btn-size">M</span></li>
-                                        <li class="list-inline-item"><span class="btn btn-success btn-size">L</span></li>
-                                        <li class="list-inline-item"><span class="btn btn-success btn-size">XL</span></li>
-                                    </ul>
-                                </div> -->
-                                <div class="col-auto">
+                                <div class="col-12 py-4">
+                                    <h6>Variations:</h6>
+                                    <% variationTypes.forEach((varType, ind) => { 
+                                        if(product.variations.filter(variation => variation.type.equals(varType._id)).length > 0) { %>
+                                            <div class="btn-group align-items-center py-1 row w-100" role="group" aria-label="Basic radio toggle button group">
+                                                <div class="col-auto">
+                                                    <span class="pe-2"><%= varType.name %></span>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <% product.variations.forEach((variation, index) => { 
+                                                        if(variation.type.equals(varType._id)) { %>
+                                                            <input type="radio" class="btn-check" name="variations[<%= ind %>]" id="<%=`btncheck${variation._id}`%>" value="<%= variation._id %>" autocomplete="off">
+                                                            <label class="btn btn-outline-primary" for="<%=`btncheck${variation._id}`%>"><%= variation.name %></label>
+                                                        <% }
+                                                    }); %>
+                                                </div>
+                                            </div>
+                                    <% }}); %>
+                                </div>
+                                <div class="col-12 py-4">
                                     <ul class="list-inline pb-3">
                                         <li class="list-inline-item text-right">
                                             Quantity
