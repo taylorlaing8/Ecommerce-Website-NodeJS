@@ -93,35 +93,56 @@ module.exports = {
         })
     },
     addImage: async (req, res, next) => {     
+        let product = res.locals.product;
+
         try {
-            let product = res.locals.product
+            product = res.locals.product
             let imgIndex = product.images.length + 1;
 
-            req.files.images.forEach(async (imgFile, index) => {
-                imgIndex += index;
+            if(req.files.images.length >= 1) {
+                req.files.images.forEach(async (imgFile, index) => {
+                    imgIndex += index;
 
-                let uploadPath = `${path.join(__dirname, "../public/img/product/")}${product._id}-product-image${imgIndex}.jpg`;
+                    let uploadPath = `${path.join(__dirname, "../public/img/product/")}${product._id}-product_image-${Date.now()}${imgIndex}.jpg`;
+                
+                    let img = await Image.create({
+                        title: product.title + ' Product Image',
+                        alt: product.slug + '-product-image',
+                        url: `/img/product/${product._id}-product_image-${Date.now()}${imgIndex}.jpg`
+                    })
+
+                    await imgFile.mv(uploadPath, (err) => {
+                        if (err) console.log(`Error uploading image: ${error.message}`);
+                    })
+
+                    product = await Product.findByIdAndUpdate(product._id, {
+                        $addToSet: { images: img._id }
+                    })                
+                })
+            } else {
+                let uploadPath = `${path.join(__dirname, "../public/img/product/")}${product._id}-product_image-${Date.now()}${imgIndex}.jpg`;
             
                 let img = await Image.create({
                     title: product.title + ' Product Image',
                     alt: product.slug + '-product-image',
-                    url: `/img/product/${product._id}-product-image${imgIndex}.jpg`
+                    url: `/img/product/${product._id}-product_image-${Date.now()}${imgIndex}.jpg`
                 })
 
-                await imgFile.mv(uploadPath, (err) => {
+                await req.files.images.mv(uploadPath, (err) => {
                     if (err) console.log(`Error uploading image: ${error.message}`);
                 })
 
                 product = await Product.findByIdAndUpdate(product._id, {
                     $addToSet: { images: img._id }
                 })                
-            })
+            }
 
             res.locals.product = product;
             res.locals.redirect = `/admin/product/${product.slug}#images`;
             next();
             
         } catch (error) {
+            console.log(error);
             req.flash("error", "Error uploading image")
             res.locals.redirect = `/admin/product/${product.slug}#images`;
             next();

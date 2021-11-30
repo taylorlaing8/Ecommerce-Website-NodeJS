@@ -2,7 +2,7 @@
     <form action="<%=`/product/${product.slug}/add-image`%>" method="POST" role="form" encType="multipart/form-data">
         <div class="row pb-3 align-items-center">
             <% product.images.forEach(image => { %>
-                <div class="col-auto position-relative">
+                <div class="col-auto my-2 position-relative">
                     <a class="btn btn-sm btn-danger image-remove" href="<%=`/product/${product.slug}/image/${image._id}/remove`%>">x</a>
                     <img src="<%= `${image.url}` %>" alt="<%= `${image.alt}` %>" class="d-block product-image rounded">                
                 </div>
