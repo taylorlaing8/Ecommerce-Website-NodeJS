@@ -1,3 +1,36 @@
+
+<div class="container light-style flex-grow-1 container-p-y py-5">
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a  href="#dashboard">Shop</a></li>
+        </ol>
+    </nav>
+
+    <div class="card overflow-hidden">
+        <div class="row no-gutters row-bordered row-border-light px-3 py-4">
+            <div class="col-md-2 pt-0">
+                <div class="nav flex-column nav-pills me-3" id="v-pills-tab">
+                    <button hidden class="nav-link active" data-tab="dashboard" id="dashboard-tab" data-bs-toggle="pill" data-bs-target="#admin-dashboard" type="button">Dashboard</button>
+                    <% categories.forEach(category => { %>
+                        <button class="nav-link" data-tab="<%= category.slug %>" id="<%= `${category.slug}-tab` %>" data-bs-toggle="pill" data-bs-target="<%= `#shop-${category.slug}` %>" type="button"><%= category.title %></button>
+                    <% }) %>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="tab-content h-100" id="v-pills-tabContent">
+                    
+                    <% categories.forEach(category => { %>
+                        <%- include('category', {category: category}) %>
+                    <% }) %>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 <!-- Modal -->
 <div class="modal fade bg-white" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -15,43 +48,6 @@
     </div>
 </div>
 
-
-
-<!-- Start Content -->
-<div class="container py-5">
-    <div class="row">
-        
-        <div class="col-lg-3">
-            <h1 class="h2 pb-4">Categories</h1>
-            
-            <ul class="list-unstyled">
-                <li class="pb-3">
-                    <% categories.forEach(category => { %>
-                    <a class="collapsed d-flex justify-content-between h3 text-decoration-none" href="<%= `/shop/${category.slug}` %>">
-                        <%= category.title %>
-                    </a>
-                    <% }) %>
-                </li>
-            </ul>
-        </div>
-
-        <div class="col-lg-9">
-            <div class="row">
-                <div class="col-md-6 pb-4">
-                    <div class="d-flex">
-                        <select class="form-control">
-                            <option>Featured</option>
-                            <option>A to Z</option>
-                            <option>Item</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</div>
-<!-- End Content -->
 
 <!-- Start Brands -->
 <section class="bg-light py-5">
