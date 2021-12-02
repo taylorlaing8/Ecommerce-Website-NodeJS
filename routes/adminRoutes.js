@@ -26,7 +26,7 @@ router.get(
     variationController.getAllVarTypes,
     imageController.getAll,
     accountController.getAll,
-    // orderController.getAll,
+    orderController.getAll,
     accountController.adminIndex
 );
 

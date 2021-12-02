@@ -1,6 +1,7 @@
 "use strict";
 
 const { check, validationResult } = require("express-validator");
+const Order = require("../models/order");
 const User = require("../models/user"),
     Image = require("../models/image"),
     Address = require("../models/address"),
@@ -40,7 +41,13 @@ module.exports = {
         User.findById(currentUser._id).populate('profileImage').populate('shipping_address')
         .then(user => {
             res.locals.currentUser = user;
-            next();
+
+            Order.find({
+                user: user._id
+            }).then(orders => {
+                res.locals.orders = orders;
+                next();
+            })
         })
         .catch(err => {
             req.flash("error", "Error loading user account.");
