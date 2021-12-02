@@ -1,2 +1,26 @@
 <div class="tab-pane fade" id="admin-orders" >
+    <div class="row pb-3">
+        <div class="col-12 table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr class="table-active">
+                        <th class="align-middle">Date</th>
+                        <th class="align-middle"># Items</th>
+                        <th class="align-middle">Paid</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% orders.forEach(order => { %>
+                        <tr>
+                            <td class="align-middle"><%= order.date %></td>
+                            <td class="align-middle"><%= order.items.length %></td>
+                            <td class="align-middle"><%= order.paid %></td>
+                            <td><a role="button" class="btn btn-outline-secondary btn-sm" href="<%=`/order/${order._id}/invoice`%>">View Invoice</a></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
