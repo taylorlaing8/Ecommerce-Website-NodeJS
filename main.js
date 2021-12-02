@@ -77,6 +77,7 @@ app.use((req, res, next) => {
   res.locals.loggedIn = req.isAuthenticated();
   res.locals.currentUser = req.user;
   res.locals.flashMessages = req.flash();
+  res.locals.cart = req.session.cart;
   next();
 });
 //app.use(expressValidator());
