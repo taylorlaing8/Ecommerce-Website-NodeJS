@@ -9,7 +9,7 @@ router.post("/add", cartController.addToCart, cartController.saveCart);
 router.post("/update", cartController.updateQuantity, cartController.saveCart);
 router.post("/remove/:id", cartController.removeFromCart, cartController.saveCart);
 
-router.get("/checkout", ensureLoggedIn("/users/login"), cartController.index);
+router.get("/checkout", ensureLoggedIn("/login"), cartController.index);
 router.post("/stripecheckout", cartController.saveOrder, cartController.stripeCheckout);
 router.get("/confirm", cartController.confirmPayment, cartController.resetCart, cartController.showInvoice);
 

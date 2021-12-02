@@ -1,6 +1,7 @@
 "use strict";
 
 const Order = require("../models/order");
+const Product = require("../models/product");
 const path = require("path");
 require("dotenv").config({path: path.join(__dirname, "..", ".env")});
 const stripe = require('stripe')(process.env.STRIPE_SEC_KEY);
@@ -13,24 +14,28 @@ module.exports = {
     },
     saveCart: (req, res, next) => {
         req.session.cart = req.cart;
-        res.redirect("/cart/view");
+        res.redirect("/cart");
     },
     index: (req, res, next) => {
         let cart = req.cart;
         // console.log(cart);
         if (cart.items.length > 0) {
-            res.render("cart/view", { cart: cart, stripePubKey: process.env.STRIPE_PUB_KEY });
+            res.render("cart/index", { cart: cart, stripePubKey: process.env.STRIPE_PUB_KEY });
         } else {
             res.render("cart/empty");
         }
     },
-    addToCart: (req, res, next) => {
+    addToCart: async (req, res, next) => {
+        let product = await Product.findById(req.body._id).populate('images');
+
         let item = {
             _id: req.body._id,
-            title: req.body.title,
+            title: product.title,
+            thumbnail: product.images[0].url,
+            slug: product.slug,
             variations: req.body.variations.flat(1),
-            quantity: req.body.quantity,
-            price: req.body.price
+            price: product.price,
+            quantity: req.body.quantity
         };
         let cart = req.cart;
         cart.addItem(item);

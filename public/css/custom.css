@@ -186,3 +186,8 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
     justify-content: center;
     align-items: center;
 }
+
+/***** CART *****/
+.cart-table {
+    vertical-align: middle !important;
+}
