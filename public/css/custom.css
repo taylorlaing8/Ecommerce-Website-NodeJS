@@ -186,3 +186,10 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
     justify-content: center;
     align-items: center;
 }
+
+/***** ADMIN *****/
+.product-slider-thumb {
+    width: 125px;
+    height: 125px;
+    object-fit: cover;
+}
