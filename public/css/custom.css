@@ -194,6 +194,12 @@ html:not(.dark-style) .account-settings-links .list-group-item.active {
     align-items: center;
 }
 
+.product-slider-thumb {
+    width: 125px;
+    height: 125px;
+    object-fit: cover;
+}
+
 /***** CART *****/
 .cart-table {
     vertical-align: middle !important;
