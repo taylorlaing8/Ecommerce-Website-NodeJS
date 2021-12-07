@@ -2,6 +2,13 @@
 Custom Css
 */
 
+/***** HOME PAGE *****/
+.card-img-top {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
 /***** NAVIGATION *****/
 .nav-account {
     display: flex;

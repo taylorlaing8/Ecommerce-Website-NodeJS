@@ -12,6 +12,10 @@ const mongoose = require("mongoose"),
             type: String,
             required: true
         },
+        image: {
+            type: Schema.Types.ObjectId,
+            ref: "Image"
+        },
         description: {
             type: String
         }

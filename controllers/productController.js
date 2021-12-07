@@ -41,6 +41,16 @@ module.exports = {
             next(err);
         })
     },
+    getThree: (req, res, next) => {
+        Product.find({}).populate('images')
+        .then(products => {
+          res.locals.products = products.slice(0, 3);
+          next();
+        }).catch(err => {
+          console.log(`Error fetching top 3 products: ${err}`);
+          next(err);
+        })
+      },
     create: (req, res, next) => {
         let prodParams = {
             slug: req.body.slug,

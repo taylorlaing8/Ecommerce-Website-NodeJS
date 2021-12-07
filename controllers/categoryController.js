@@ -2,13 +2,15 @@
 
 const Category = require("../models/category"),
   httpStatus = require("http-status-codes"),
-  Product = require("../models/product");
+  Product = require("../models/product"),
+  Image = require("../models/image"),
+  path = require("path");
 
 module.exports = {
   index: (req, res, next) => {
     let catSlug = req.params.slug;
 
-    Category.findOne({ slug: catSlug })
+    Category.findOne({ slug: catSlug }).populate('image')
       .then(category => {
         if (category) {
           res.locals.category = category;
@@ -36,7 +38,7 @@ module.exports = {
     res.render("shop/category");
   },
   getAll: (req, res, next) => {
-    Category.find({})
+    Category.find({}).populate('image')
       .then(categories => {
         res.locals.categories = categories;
         next();
@@ -44,6 +46,16 @@ module.exports = {
         console.log(`Error retrieving categories: ${err.message}`);
         next(err);
       })
+  },
+  getThree: (req, res, next) => {
+    Category.find({}).populate('image')
+    .then(categories => {
+      res.locals.topCategories = categories.slice(0, 3);
+      next();
+    }).catch(err => {
+      console.log(`Error fetching top 3 categories: ${err}`);
+      next(err);
+    })
   },
   create: (req, res, next) => {
     let catParams = {
@@ -65,26 +77,46 @@ module.exports = {
         next();
       })
   },
-  update: (req, res, next) => {
+  update: async (req, res, next) => {
     let catParams = {
       slug: req.body.slug,
       title: req.body.title,
       description: req.body.description
     };
 
-    Category.findByIdAndUpdate(req.body.id, {
-      $set: catParams
-    }).then(category => {
-      req.flash("success", `Category Updated Successfully!`);
-      res.locals.redirect = `/admin/category/${category.slug}`;
-      res.locals.category = category;
-      next();
-    })
-      .catch(error => {
-        req.flash("error", `Error saving category.`);
-        res.locals.redirect = `/admin/category/${category.slug}`;
-        next();
+    try {
+      let category = await Category.findById(req.body.id);
+
+      if (req.files && req.files.image) {
+        let imgFile = req.files.image;
+        let uploadPath = path.join(__dirname, "../public/img/category/") + category._id + '_category_image.jpg';
+
+        if(category.image) await Image.findByIdAndDelete(category.image)
+        let img = await Image.create({
+          title: category.title + ' Category Image',
+          alt: category.slug + '_category_image',
+          url: '/img/category/' + category._id + '_category_image.jpg'
+        })
+
+        catParams.image = img._id;
+        imgFile.mv(uploadPath, (err) => {
+            if (err) req.flash("error", `Error uploading image: ${err.message}`);
+        });
+      }
+
+      let updatedCategory = await Category.findByIdAndUpdate(category._id, {
+        $set: catParams
       })
+      req.flash("success", `Category Updated!`);
+      res.locals.redirect = `/admin/category/${category.slug}`;
+      res.locals.category = updatedCategory;
+      next();
+
+    } catch (err) {
+      req.flash("error", `Error updating category: ${err.message}.`);
+      res.locals.redirect = `/admin/category/${catParams.slug}`;
+      next();
+    }
   },
   remove: (req, res, next) => {
     let catSlug = req.params.slug;

@@ -1,5 +1,5 @@
 <div class="tab-pane fade active show" id="category-details">
-    <form action="<%= `/category/${category ? 'update' : 'create'}` %>" method="POST" role="form" class="row">
+    <form action="<%= `/category/${category ? 'update' : 'create'}` %>" method="POST" role="form" class="row"  encType="multipart/form-data">
         <h2 style="text-align: center;"><%= category ? "Update Category" : "Create Category" %></h2>
         <%- include('category-form') %>
     </form>
