@@ -79,16 +79,16 @@ orderSchema.virtual("total").get(function () {
     return total;
 });
 
-orderSchema.methods.findItem = function (id) {
+orderSchema.methods.findItem = function (id, variations) {
     let order = this;
     let item = null;
-    item = order.items.find(item => item._id === id);
+    item = order.items.find(item => item._id === id && JSON.stringify(item.variations) === JSON.stringify(variations));
     return item;
 };
 
 orderSchema.methods.addItem = function (item) {
     let order = this;
-    let existingItem = order.findItem(item._id);
+    let existingItem = order.findItem(item._id, item.variations);
     if (existingItem) {
         existingItem.updateQuantity(existingItem.quantity + 1);
     } else {

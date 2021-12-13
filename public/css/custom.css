@@ -9,6 +9,13 @@ Custom Css
     object-fit: cover;
 }
 
+/***** SHOP PAGE *****/
+.shop-img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
 /***** NAVIGATION *****/
 .nav-account {
     display: flex;

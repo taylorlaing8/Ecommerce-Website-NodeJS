@@ -2,9 +2,22 @@
     <div class="row pb-3">
         <div class="col-12 table-responsive">
             <div class="row pb-3">
-                <% categories.forEach(category => { %> 
-                    <div class="col-4 py-2">
-                        <a class="btn btn-success w-100" href="<%=`#${category.slug}`%>"><%= category.title %></a>
+                <% categories.forEach(category => { %>
+                    <div class="col-md-3">
+                        <div class="card mb-4 product-wap rounded-0">
+                            <div class="card rounded-0">
+                                <a href="<%=`#${category.slug}`%>">
+                                    <% if(category.image) { %>
+                                        <img class="card-img rounded-0 img-fluid" src="<%= category.image.url %>" alt="<%= category.image.alt %>">
+                                    <% } else { %>
+                                        <img class="card-img rounded-0 img-fluid" src="/img/missing_image.jpg" alt="category image not available">
+                                    <% } %>
+                                </a>
+                            </div>
+                            <div class="card-body text-center">
+                                <a href="<%=`#${category.slug}`%>" class="h3 text-decoration-none fw-bold"><%= category.title %></a>
+                            </div>
+                        </div>
                     </div>
                 <% }) %>
             </div>

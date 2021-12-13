@@ -91,7 +91,14 @@ module.exports = {
         let imgFile = req.files.image;
         let uploadPath = path.join(__dirname, "../public/img/category/") + category._id + '_category_image.jpg';
 
-        if(category.image) await Image.findByIdAndDelete(category.image)
+        let pastImage = await Image.findOne({url: `/img/category/${category._id}/_category_image.jpg`})
+        if(category.image) {
+            await Image.findByIdAndDelete(category.image)
+        }
+        if(pastImage) {
+            await Image.findByIdAndDelete(pastImage._id);
+        }
+
         let img = await Image.create({
           title: category.title + ' Category Image',
           alt: category.slug + '_category_image',

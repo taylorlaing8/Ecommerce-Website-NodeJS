@@ -120,8 +120,12 @@ module.exports = {
             let uploadPath = path.join(__dirname, "../public/img/account/") + currentUser._id + '_profile_image.jpg';
 
             try {
+                let pastImage = await Image.findOne({url: `/img/account/${currentUser._id}_profile_image.jpg`})
                 if(currentUser.profileImage) {
-                    let res = await Image.findByIdAndDelete(currentUser.profileImage)
+                    await Image.findByIdAndDelete(currentUser.profileImage)
+                }
+                if(pastImage) {
+                    await Image.findByIdAndDelete(pastImage._id);
                 }
                 
                 let img = await Image.create({
