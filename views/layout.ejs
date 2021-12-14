@@ -33,6 +33,9 @@
 					<i class="fa fa-phone mx-2"></i>
 					<a class="navbar-sm-brand text-light text-decoration-none" href="tel:1-800-658-9874">1-800-658-9874</a>
 				</div>
+                <div>
+                    <p style="margin:0px">It is currently <%= currentWeather.temperature %>° in Logan, Utah</p>
+                </div>
 				<% if(currentUser && currentUser.admin) { %>
                     <div class="my-2">
                         <a class="nav-admin" href="/admin">ADMIN</a>

@@ -11,6 +11,7 @@
   "author": "Taylor Laing, Collin",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.24.0",
     "bootstrap-select": "^1.13.18",
     "connect-ensure-login": "^0.1.1",
     "connect-flash": "^0.1.1",

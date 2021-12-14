@@ -41,6 +41,12 @@ module.exports = {
             next(err);
         })
     },
+    respondJSON: (req, res) => {
+        res.json({
+          status: httpStatus.OK,
+          data: res.locals.products
+        });
+    },
     getThree: (req, res, next) => {
         Product.find({}).populate('images')
         .then(products => {

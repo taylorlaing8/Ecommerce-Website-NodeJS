@@ -13,7 +13,8 @@ const express = require("express"),
   expressValidator = require("express-validator"),
   passport = require("passport"),
   User = require("./models/user"),
-  fileUpload = require('express-fileupload');
+  fileUpload = require('express-fileupload'),
+  axios = require("axios").default;
 
 require("dotenv").config();
 
@@ -73,11 +74,35 @@ app.use(connectFlash());
 
 app.use(fileUpload());
 
+var options = {
+  method: 'GET',
+  url: 'https://api.open-meteo.com/v1/forecast',
+  params: {
+    latitude: '41.77',
+    longitude: '-111.83',
+    hourly: 'temperature_2m',
+    current_weather: true,
+    temperature_unit: 'fahrenheit',
+    windspeed_unit: 'mph',
+    precipitation_unit: 'inch',
+    timezone: 'America/Denver'
+  }
+};
+
+var weather = {};
+
+axios.request(options).then(function (response) {
+	weather = response.data.current_weather;
+}).catch(function (error) {
+	console.error(error);
+});
+
 app.use((req, res, next) => {
   res.locals.loggedIn = req.isAuthenticated();
   res.locals.currentUser = req.user;
   res.locals.flashMessages = req.flash();
   res.locals.cart = req.session.cart;
+  res.locals.currentWeather = weather;
   next();
 });
 //app.use(expressValidator());

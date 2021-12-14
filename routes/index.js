@@ -13,6 +13,7 @@ const router = require("express").Router(),
     orderRoutes = require("./orderRoutes"),
     accountRoutes = require("./accountRoutes"),
     adminRoutes = require("./adminRoutes"),
+    apiRoutes = require("./apiRoutes"),
     errorRoutes = require("./errorRoutes"),
     categoryController = require("../controllers/categoryController");;
 
@@ -29,6 +30,7 @@ router.use("/cart", cartRoutes);
 router.use("/order", orderRoutes);
 router.use("/account", accountRoutes);
 router.use("/admin", adminRoutes);
+router.use("/api", apiRoutes);
 router.use("/", homeRoutes);
 router.use("/", errorRoutes);
 

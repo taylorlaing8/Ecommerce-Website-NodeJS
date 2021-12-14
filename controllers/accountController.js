@@ -6,6 +6,7 @@ const User = require("../models/user"),
     Image = require("../models/image"),
     Address = require("../models/address"),
     passport = require("passport"),
+    httpStatus = require("http-status-codes"),
     token = process.env.TOKEN || "cvtToken08$",
     jsonWebToken = require("jsonwebtoken"),
     path = require("path"),
@@ -231,6 +232,28 @@ module.exports = {
         successReturnToOrRedirect: "/",
         successFlash: "Logged in!"
     }),
+    apiAuthenticate: (req, res, next) => {
+        passport.authenticate("local", (errors, user) => {
+            console.log(errors);
+          if (user) {
+            let signedToken = jsonWebToken.sign(
+              {
+                data: user._id,
+                exp: new Date().setDate(new Date().getDate() + 1)
+              },
+              "secret_encoding_passphrase"
+            );
+            res.json({
+              success: true,
+              token: signedToken
+            });
+          } else
+            res.json({
+              success: false,
+              message: "Could not authenticate user."
+            });
+        })(req, res, next);
+    },
     verifyJWT: (req, res, next) => {
         let token = req.headers.token;
         if (token) {
